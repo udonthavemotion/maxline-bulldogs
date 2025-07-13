@@ -120,3 +120,4 @@ playwright-report/
 # Static assets (keep placeholder media for now)
 # public/images/
 # public/videos/ 
+.vercel
