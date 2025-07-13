@@ -1,0 +1,473 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Gallery from '../components/Gallery.astro';
+import VideoHero from '../components/VideoHero.astro';
+
+// Stud profiles with cinematic theming and media assignments
+// TODO: Map images to studs accurately; integrate Stripe payments
+const studs = [
+  {
+    id: 'joker',
+    name: 'Joker',
+    subtitle: 'The Chocolate Mastermind',
+    description: 'Meet our chocolate and tan champion, embodying the charismatic unpredictability of the legendary villain. Joker brings a perfect balance of playful mischief and noble temperament.',
+    traits: [
+      'Chocolate & Tan Coloring',
+      'AKC Champion Bloodlines',
+      'Playful & Charismatic',
+      'Health Cleared',
+      'Proven Genetics',
+      'Premium Stud Fee'
+    ],
+    stats: {
+      'Weight': '28 lbs',
+      'Height': '14 inches',
+      'Age': '3 years',
+      'Sire': 'Champion Bloodline',
+      'Dam': 'Champion Bloodline',
+      'Fee': '$2,500'
+    },
+    media: [
+      {
+        src: '/maxlinebulldogs insta/horrorbullzhq/Joker.jpg',
+        alt: 'Joker - Chocolate and tan AKC Mini English Bulldog stud',
+        title: 'Joker Portrait',
+        category: 'Reference'
+      },
+      {
+        src: '/maxlinebulldogs insta/horrorbullzhq/joker1.jpg',
+        alt: 'Joker character inspiration for chocolate bulldogs',
+        title: 'Cinematic Inspiration',
+        category: 'Inspiration'
+      },
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1744558229_3609938532074007372_69185781706.jpg',
+        alt: 'Chocolate colored bulldog representing Joker lineage',
+        title: 'Joker Lineage',
+        category: 'Bloodline'
+      }
+    ],
+    theme: 'joker'
+  },
+  {
+    id: 'nirvana',
+    name: 'Nirvana',
+    subtitle: 'The Lilac Dream',
+    description: 'Our serene lilac merle beauty represents the ethereal calm of nirvana. With her stunning coat and gentle demeanor, she embodies peaceful perfection.',
+    traits: [
+      'Lilac Merle Coloring',
+      'AKC Champion Bloodlines',
+      'Gentle & Serene',
+      'Health Cleared',
+      'Exceptional Genetics',
+      'Premium Stud Fee'
+    ],
+    stats: {
+      'Weight': '26 lbs',
+      'Height': '13 inches',
+      'Age': '2.5 years',
+      'Sire': 'Champion Bloodline',
+      'Dam': 'Champion Bloodline',
+      'Fee': '$3,000'
+    },
+    media: [
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1745151506_3614915296429053314_69185781706.jpg',
+        alt: 'Lilac merle bulldog representing Nirvana lineage',
+        title: 'Nirvana Beauty',
+        category: 'Bloodline'
+      },
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1739303318_3565857147025371750_69185781706.jpg',
+        alt: 'Serene bulldog with lilac coloring',
+        title: 'Peaceful Presence',
+        category: 'Bloodline'
+      }
+    ],
+    theme: 'nirvana'
+  },
+  {
+    id: 'hannibal',
+    name: 'Hannibal',
+    subtitle: 'The Dark Sovereign',
+    description: 'Commanding presence meets refined elegance in our dark brindle champion. Hannibal represents the sophisticated darkness of the legendary character.',
+    traits: [
+      'Dark Brindle Coloring',
+      'AKC Champion Bloodlines',
+      'Commanding Presence',
+      'Health Cleared',
+      'Dominant Genetics',
+      'Premium Stud Fee'
+    ],
+    stats: {
+      'Weight': '32 lbs',
+      'Height': '15 inches',
+      'Age': '4 years',
+      'Sire': 'Champion Bloodline',
+      'Dam': 'Champion Bloodline',
+      'Fee': '$2,800'
+    },
+    media: [
+      {
+        src: '/maxlinebulldogs insta/horrorbullzhq/Hannibal Lecter.jpg',
+        alt: 'Hannibal Lecter inspiration for dark brindle bulldogs',
+        title: 'Hannibal Portrait',
+        category: 'Reference'
+      },
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1741419816_3583611611723144500_69185781706.jpg',
+        alt: 'Dark brindle bulldog representing Hannibal lineage',
+        title: 'Dark Majesty',
+        category: 'Bloodline'
+      }
+    ],
+    theme: 'hannibal'
+  },
+  {
+    id: 'substance',
+    name: 'The Substance',
+    subtitle: 'The Ethereal Beauty',
+    description: 'Pure elegance in cream and white, The Substance represents the ethereal beauty and transformative power of the legendary character.',
+    traits: [
+      'Cream & White Coloring',
+      'AKC Champion Bloodlines',
+      'Ethereal Beauty',
+      'Health Cleared',
+      'Rare Genetics',
+      'Premium Stud Fee'
+    ],
+    stats: {
+      'Weight': '24 lbs',
+      'Height': '12 inches',
+      'Age': '2 years',
+      'Sire': 'Champion Bloodline',
+      'Dam': 'Champion Bloodline',
+      'Fee': '$3,500'
+    },
+    media: [
+      {
+        src: '/maxlinebulldogs insta/horrorbullzhq/Substance.jpg',
+        alt: 'The Substance inspiration for cream and white bulldogs',
+        title: 'The Substance Portrait',
+        category: 'Reference'
+      },
+      {
+        src: '/maxlinebulldogs insta/horrorbullzhq/substance1.jpg',
+        alt: 'The Substance character inspiration',
+        title: 'Ethereal Inspiration',
+        category: 'Inspiration'
+      },
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1749873342_3654524932009186630_69185781706.jpg',
+        alt: 'Cream and white bulldog representing The Substance lineage',
+        title: 'Pure Elegance',
+        category: 'Bloodline'
+      }
+    ],
+    theme: 'substance'
+  },
+  {
+    id: 'sandman',
+    name: 'The Sandman',
+    subtitle: 'The Golden Dream',
+    description: 'Our golden fawn champion embodies the dreamy mystique of The Sandman. With his hypnotic presence and golden coat, he brings dreams to life.',
+    traits: [
+      'Golden Fawn Coloring',
+      'AKC Champion Bloodlines',
+      'Dreamy Temperament',
+      'Health Cleared',
+      'Mystical Genetics',
+      'Premium Stud Fee'
+    ],
+    stats: {
+      'Weight': '30 lbs',
+      'Height': '14 inches',
+      'Age': '3.5 years',
+      'Sire': 'Champion Bloodline',
+      'Dam': 'Champion Bloodline',
+      'Fee': '$2,700'
+    },
+    media: [
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1746319677_3624714632129571945_69185781706.jpg',
+        alt: 'Golden fawn bulldog representing The Sandman lineage',
+        title: 'Golden Dreams',
+        category: 'Bloodline'
+      },
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1745766965_3620078140636059941_69185781706.jpg',
+        alt: 'Dreamy fawn colored bulldog',
+        title: 'Mystical Presence',
+        category: 'Bloodline'
+      }
+    ],
+    theme: 'sandman'
+  },
+  {
+    id: 'harley',
+    name: 'Harley Quinn',
+    subtitle: 'The Playful Rebel',
+    description: 'Our tri-color piebald champion captures the playful chaos and vibrant energy of Harley Quinn. Bold, beautiful, and irresistibly charming.',
+    traits: [
+      'Tri-Color Piebald',
+      'AKC Champion Bloodlines',
+      'Playful & Energetic',
+      'Health Cleared',
+      'Vibrant Genetics',
+      'Premium Stud Fee'
+    ],
+    stats: {
+      'Weight': '25 lbs',
+      'Height': '13 inches',
+      'Age': '2.5 years',
+      'Sire': 'Champion Bloodline',
+      'Dam': 'Champion Bloodline',
+      'Fee': '$3,200'
+    },
+    media: [
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1747346710_3633330005343056233_69185781706.jpg',
+        alt: 'Tri-color piebald bulldog representing Harley Quinn lineage',
+        title: 'Playful Chaos',
+        category: 'Bloodline'
+      },
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1744626227_3610508941496664062_69185781706.jpg',
+        alt: 'Vibrant colored bulldog with playful expression',
+        title: 'Rebel Beauty',
+        category: 'Bloodline'
+      }
+    ],
+    theme: 'harley'
+  }
+];
+---
+
+<Layout title="Champion Studs | Maxline Bulldogs" description="Meet our cinematic lineup of AKC Champion Mini English Bulldogs. Each stud embodies legendary film characters: Joker, Nirvana, Hannibal, The Substance, The Sandman, and Harley Quinn.">
+  <!-- Hero Section -->
+  <VideoHero 
+    videoSrc="/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1745394952_3616957193120315146_69185781706.mp4"
+    title="Meet Our Champions"
+    subtitle="Cinematic Legends in Every Bloodline"
+    overlay={true}
+    autoplay={true}
+    loop={true}
+    muted={true}
+    className="h-[70vh]"
+  />
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Introduction -->
+    <div class="text-center mb-16 fade-in">
+      <h1 class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-6">
+        Our Champion Studs
+      </h1>
+      <p class="text-xl text-silver max-w-3xl mx-auto leading-relaxed">
+        Each of our champion studs embodies the dramatic presence and legendary status of iconic film characters. 
+        Born from champion bloodlines and raised with cinematic inspiration, they represent the pinnacle of 
+        AKC Mini English Bulldog breeding excellence.
+      </p>
+    </div>
+
+    <!-- Stud Profiles -->
+    <div class="space-y-24">
+      {studs.map((stud, index) => (
+        <section class={`stud-profile ${stud.theme} ${index % 2 === 0 ? 'slide-left' : 'slide-right'}`}>
+          <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${index % 2 === 0 ? '' : 'lg:flex-row-reverse'}`}>
+            <!-- Stud Info -->
+            <div class={`${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
+              <div class="mb-8">
+                <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-2">
+                  {stud.name}
+                </h2>
+                <p class="text-xl text-silver mb-6 italic">
+                  {stud.subtitle}
+                </p>
+                <p class="text-lg text-white leading-relaxed mb-8">
+                  {stud.description}
+                </p>
+              </div>
+
+              <!-- Traits -->
+              <div class="mb-8">
+                <h3 class="text-xl font-playfair font-semibold text-accent mb-4">
+                  Champion Traits
+                </h3>
+                <ul class="grid grid-cols-2 gap-2">
+                  {stud.traits.map(trait => (
+                    <li class="flex items-center text-silver">
+                      <span class="text-accent mr-2">★</span>
+                      {trait}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- Stats Table -->
+              <div class="bg-card-gradient p-6 rounded-lg border border-accent border-opacity-20">
+                <h3 class="text-xl font-playfair font-semibold text-accent mb-4">
+                  Stud Information
+                </h3>
+                <div class="grid grid-cols-2 gap-4">
+                  {Object.entries(stud.stats).map(([key, value]) => (
+                    <div class="border-b border-accent border-opacity-20 pb-2">
+                      <dt class="text-sm text-silver">{key}</dt>
+                      <dd class="text-lg text-white font-semibold">{value}</dd>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <!-- Reserve Button -->
+              <!-- TODO: Integrate Stripe payment processing for stud services -->
+              <div class="mt-8">
+                <a href="/contact" class="luxury-button inline-block">
+                  Reserve {stud.name}
+                </a>
+              </div>
+            </div>
+
+            <!-- Stud Gallery -->
+            <div class={`${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
+              <Gallery 
+                images={stud.media}
+                title={`${stud.name} Gallery`}
+                columns={2}
+                className="stud-gallery"
+              />
+            </div>
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-24 fade-in">
+      <div class="bg-card-gradient p-12 rounded-lg border border-accent border-opacity-20">
+        <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
+          Ready to Reserve Your Legend?
+        </h2>
+        <p class="text-xl text-silver mb-8 max-w-2xl mx-auto">
+          Contact us today to reserve stud services or learn more about our champion bloodlines. 
+          Each breeding is carefully planned to produce the next generation of legends.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/contact" class="luxury-button">
+            Contact Us
+          </a>
+          <a href="/puppies" class="luxury-button">
+            View Available Puppies
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* Stud Profile Animations */
+  .stud-profile {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  .slide-left {
+    animation-delay: 0.2s;
+  }
+
+  .slide-right {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Theme-specific styling */
+  .stud-profile.joker {
+    border-left: 4px solid #D2691E;
+  }
+
+  .stud-profile.hannibal {
+    border-left: 4px solid #2F2F2F;
+  }
+
+  .stud-profile.substance {
+    border-left: 4px solid #F5F5DC;
+  }
+
+  .stud-profile.nirvana {
+    border-left: 4px solid #9370DB;
+  }
+
+  .stud-profile.sandman {
+    border-left: 4px solid #D4AF37;
+  }
+
+  .stud-profile.harley {
+    border-left: 4px solid #FF69B4;
+  }
+
+  /* Gallery styling */
+  .stud-gallery {
+    position: relative;
+  }
+
+  .stud-gallery::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(45deg, #D4AF37, #4169E1);
+    border-radius: 10px;
+    opacity: 0.1;
+    z-index: -1;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    .stud-profile .lg\:order-1,
+    .stud-profile .lg\:order-2 {
+      order: initial !important;
+    }
+  }
+
+  /* Hover effects */
+  .stud-profile:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+  }
+
+  .stud-profile:hover .stud-gallery::before {
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Enhanced typography */
+  .stud-profile h2 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .stud-profile .italic {
+    font-style: italic;
+    color: #C0C0C0;
+  }
+
+  /* Stats table styling */
+  .stud-profile dt {
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .stud-profile dd {
+    font-family: 'Playfair Display', serif;
+  }
+</style> 

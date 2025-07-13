@@ -1,0 +1,238 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+  image?: string;
+  type?: 'website' | 'article' | 'product';
+  price?: string;
+  category?: string;
+}
+
+const { title, description, keywords, image, type, price, category } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Comprehensive SEO Component -->
+    <SEOHead 
+      title={title}
+      description={description}
+      keywords={keywords}
+      image={image}
+      type={type}
+      price={price}
+      category={category}
+    />
+    
+    <!-- Luxury Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-charcoal text-white font-inter">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-charcoal bg-opacity-90 backdrop-blur-md border-b border-accent border-opacity-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <div class="flex-shrink-0">
+            <a href="/" class="text-2xl font-playfair font-bold text-accent hover:text-silver transition-colors">
+              Maxline Bulldogs
+            </a>
+          </div>
+          
+          <!-- Desktop Navigation -->
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <a href="/" class="nav-link">Home</a>
+              <a href="/studs" class="nav-link">Studs</a>
+              <a href="/puppies" class="nav-link">Puppies</a>
+              <a href="/about" class="nav-link">About</a>
+              <a href="/contact" class="nav-link">Contact</a>
+            </div>
+          </div>
+          
+          <!-- Mobile menu button -->
+          <div class="md:hidden">
+            <button class="mobile-menu-button text-accent hover:text-silver focus:outline-none">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mobile Navigation -->
+      <div class="md:hidden mobile-menu hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-charcoal bg-opacity-95">
+          <a href="/" class="mobile-nav-link">Home</a>
+          <a href="/studs" class="mobile-nav-link">Studs</a>
+          <a href="/puppies" class="mobile-nav-link">Puppies</a>
+          <a href="/about" class="mobile-nav-link">About</a>
+          <a href="/contact" class="mobile-nav-link">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-16 min-h-screen">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-obsidian border-t border-accent border-opacity-20 mt-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <!-- Brand -->
+          <div class="md:col-span-2">
+            <h3 class="text-2xl font-playfair font-bold text-accent mb-4">Maxline Bulldogs</h3>
+            <p class="text-silver mb-4">Where Legends Are Bred</p>
+            <p class="text-sm text-gray-400 mb-4">
+              Premium AKC Mini English Bulldogs from Champion Bloodlines in partnership with HorrorBullz HQ.
+            </p>
+            <div class="text-sm text-accent">
+              Powered by <span class="font-semibold">HorrorBullz HQ</span>
+            </div>
+          </div>
+          
+          <!-- Quick Links -->
+          <div>
+            <h4 class="font-playfair font-semibold text-accent mb-4">Quick Links</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/studs" class="text-silver hover:text-accent transition-colors">Our Studs</a></li>
+              <li><a href="/puppies" class="text-silver hover:text-accent transition-colors">Available Puppies</a></li>
+              <li><a href="/about" class="text-silver hover:text-accent transition-colors">About Us</a></li>
+              <li><a href="/contact" class="text-silver hover:text-accent transition-colors">Contact</a></li>
+            </ul>
+          </div>
+          
+          <!-- Contact Info -->
+          <div>
+            <h4 class="font-playfair font-semibold text-accent mb-4">Contact</h4>
+            <div class="space-y-2 text-sm text-silver">
+              <p>Email: info@maxlinebulldogs.com</p>
+              <p>Phone: (555) 123-4567</p>
+              <p>Follow us on social media</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="border-t border-accent border-opacity-20 mt-8 pt-8 text-center text-sm text-gray-400">
+          <p>&copy; 2024 Maxline Bulldogs. All rights reserved. | Partnership with HorrorBullz HQ</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Global Styles -->
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+        min-height: 100vh;
+      }
+      
+      .nav-link {
+        @apply text-silver hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200;
+      }
+      
+      .nav-link:hover {
+        @apply shadow-gold;
+      }
+      
+      .mobile-nav-link {
+        @apply text-silver hover:text-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200;
+      }
+      
+      .luxury-button {
+        @apply bg-gradient-to-r from-primary to-accent text-white px-6 py-3 rounded-lg font-semibold hover:shadow-gold transition-all duration-300 transform hover:scale-105;
+      }
+      
+      .responsive-grid {
+        @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+      }
+      
+      .fade-in {
+        animation: fadeIn 0.8s ease-in-out;
+      }
+      
+      .slide-up {
+        animation: slideUp 1s ease-out;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(50px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: #1a1a1a;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: #D4AF37;
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: #B8941F;
+      }
+    </style>
+
+    <!-- Mobile Menu Script -->
+    <script>
+      // Mobile menu toggle
+      const mobileMenuButton = document.querySelector('.mobile-menu-button');
+      const mobileMenu = document.querySelector('.mobile-menu');
+      
+      mobileMenuButton?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+      });
+      
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!mobileMenuButton?.contains(e.target as Node) && !mobileMenu?.contains(e.target as Node)) {
+          mobileMenu?.classList.add('hidden');
+        }
+      });
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (this: HTMLAnchorElement, e: Event) {
+          e.preventDefault();
+          const href = this.getAttribute('href');
+          if (href) {
+            const target = document.querySelector(href);
+            if (target) {
+              target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html> 

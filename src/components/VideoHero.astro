@@ -1,0 +1,166 @@
+---
+export interface Props {
+  videoSrc: string;
+  posterSrc?: string;
+  title?: string;
+  subtitle?: string;
+  overlay?: boolean;
+  autoplay?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  controls?: boolean;
+  className?: string;
+}
+
+const { 
+  videoSrc, 
+  posterSrc, 
+  title, 
+  subtitle, 
+  overlay = true, 
+  autoplay = false, 
+  loop = true, 
+  muted = true, 
+  controls = false,
+  className = '' 
+} = Astro.props;
+---
+
+<div class={`video-hero relative w-full h-screen overflow-hidden ${className}`}>
+  <!-- Video Background -->
+  <video 
+    class="absolute inset-0 w-full h-full object-cover"
+    autoplay={autoplay}
+    loop={loop}
+    muted={muted}
+    controls={controls}
+    poster={posterSrc}
+    preload="metadata"
+  >
+    <source src={videoSrc} type="video/mp4" />
+    <p class="text-white text-center">
+      Your browser does not support the video tag. 
+      <a href={videoSrc} class="text-accent hover:underline">Download the video</a>
+    </p>
+  </video>
+  
+  <!-- Gradient Overlay -->
+  {overlay && (
+    <div class="absolute inset-0 bg-hero-gradient"></div>
+  )}
+  
+  <!-- Content Overlay -->
+  {(title || subtitle) && (
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="text-center text-white px-6 max-w-4xl">
+        {title && (
+          <h1 class="text-4xl md:text-6xl font-playfair mb-6 animate-fade-in">
+            {title}
+          </h1>
+        )}
+        {subtitle && (
+          <p class="text-xl md:text-2xl font-inter opacity-90 animate-slide-up">
+            {subtitle}
+          </p>
+        )}
+      </div>
+    </div>
+  )}
+  
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+      <div class="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .video-hero video {
+    filter: brightness(0.8);
+  }
+  
+  .video-hero:hover video {
+    filter: brightness(1);
+    transition: filter 0.3s ease;
+  }
+  
+  /* Ensure video covers full area */
+  .video-hero video {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+  }
+  
+  /* Mobile optimization */
+  @media (max-width: 768px) {
+    .video-hero {
+      height: 70vh;
+    }
+    
+    .video-hero h1 {
+      font-size: 2.5rem;
+    }
+    
+    .video-hero p {
+      font-size: 1.125rem;
+    }
+  }
+  
+  /* Accessibility improvements */
+  @media (prefers-reduced-motion: reduce) {
+    .video-hero video {
+      display: none;
+    }
+    
+    .video-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #4169E1 0%, #8B4513 100%);
+    }
+    
+    .animate-fade-in,
+    .animate-slide-up,
+    .animate-bounce {
+      animation: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  // Pause video when not in viewport for performance
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target.querySelector('video');
+      if (video && video instanceof HTMLVideoElement) {
+        if (entry.isIntersecting) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      }
+    });
+  });
+
+  // Observe all video hero components
+  document.querySelectorAll('.video-hero').forEach(hero => {
+    observer.observe(hero);
+  });
+
+  // Handle video loading errors
+  document.querySelectorAll('.video-hero video').forEach(video => {
+    if (video instanceof HTMLVideoElement) {
+      video.addEventListener('error', (e) => {
+        console.warn('Video failed to load:', e);
+        // Fallback to gradient background
+        video.style.display = 'none';
+        const hero = video.closest('.video-hero');
+        if (hero && hero instanceof HTMLElement) {
+          hero.style.background = 'linear-gradient(135deg, #4169E1 0%, #8B4513 100%)';
+        }
+      });
+    }
+  });
+</script> 

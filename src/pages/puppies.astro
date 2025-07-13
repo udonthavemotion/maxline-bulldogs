@@ -1,0 +1,551 @@
+---
+import Layout from '../layouts/Layout.astro';
+import InfoCard from '../components/InfoCard.astro';
+import Gallery from '../components/Gallery.astro';
+import VideoHero from '../components/VideoHero.astro';
+import Banner from '../components/Banner.astro';
+
+// Available litters with cinematic theming
+// TODO: Map images to puppies accurately; integrate Stripe payments for deposits
+const litters = [
+  {
+    id: 'joker-legacy',
+    name: 'Joker Legacy Litter',
+    subtitle: 'Chocolate & Tan Champions',
+    description: 'Our first generation of Joker\'s legacy - chocolate and tan puppies with the same charismatic personality and championship bloodlines. Each puppy carries the mischievous spirit of their legendary sire.',
+    sire: 'Joker',
+    dam: 'Champion Bloodline',
+    birthDate: '2024-01-15',
+    readyDate: '2024-03-12',
+    status: 'Available Now',
+    colors: ['Chocolate & Tan', 'Chocolate Tri', 'Tan'],
+    puppies: [
+      {
+        name: 'Chaos',
+        color: 'Chocolate & Tan',
+        gender: 'Male',
+        weight: '4.2 lbs',
+        price: '$4,500',
+        status: 'Available',
+        personality: 'Playful leader'
+      },
+      {
+        name: 'Mayhem',
+        color: 'Chocolate Tri',
+        gender: 'Female',
+        weight: '3.8 lbs',
+        price: '$4,800',
+        status: 'Reserved',
+        personality: 'Sweet troublemaker'
+      },
+      {
+        name: 'Rascal',
+        color: 'Tan',
+        gender: 'Male',
+        weight: '4.1 lbs',
+        price: '$4,300',
+        status: 'Available',
+        personality: 'Curious explorer'
+      }
+    ],
+    media: [
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1744558229_3609938532074007372_69185781706.jpg',
+        alt: 'Joker Legacy chocolate and tan puppy',
+        title: 'Chaos - Male',
+        category: 'Available'
+      },
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1744626227_3610508941496664062_69185781706.jpg',
+        alt: 'Joker Legacy chocolate tri puppy',
+        title: 'Mayhem - Female',
+        category: 'Reserved'
+      },
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1745151506_3614915296429053314_69185781706.jpg',
+        alt: 'Joker Legacy tan puppy',
+        title: 'Rascal - Male',
+        category: 'Available'
+      }
+    ],
+    theme: 'joker'
+  },
+  {
+    id: 'hannibal-dynasty',
+    name: 'Hannibal Dynasty Litter',
+    subtitle: 'Dark Majesty Collection',
+    description: 'From the commanding presence of Hannibal comes this sophisticated litter of dark brindle and black puppies. Each carries the elegant yet powerful essence of their legendary sire.',
+    sire: 'Hannibal',
+    dam: 'Champion Bloodline',
+    birthDate: '2024-02-01',
+    readyDate: '2024-03-29',
+    status: 'Ready Soon',
+    colors: ['Dark Brindle', 'Black & Tan', 'Brindle'],
+    puppies: [
+      {
+        name: 'Sovereign',
+        color: 'Dark Brindle',
+        gender: 'Male',
+        weight: '4.5 lbs',
+        price: '$5,200',
+        status: 'Available',
+        personality: 'Regal leader'
+      },
+      {
+        name: 'Duchess',
+        color: 'Black & Tan',
+        gender: 'Female',
+        weight: '4.0 lbs',
+        price: '$5,500',
+        status: 'Available',
+        personality: 'Elegant princess'
+      }
+    ],
+    media: [
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1741419816_3583611611723144500_69185781706.jpg',
+        alt: 'Hannibal Dynasty dark brindle puppy',
+        title: 'Sovereign - Male',
+        category: 'Available'
+      },
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1742677276_3594159954488811115_69185781706.jpg',
+        alt: 'Hannibal Dynasty black and tan puppy',
+        title: 'Duchess - Female',
+        category: 'Available'
+      }
+    ],
+    theme: 'hannibal'
+  },
+  {
+    id: 'substance-ethereal',
+    name: 'Substance Ethereal Litter',
+    subtitle: 'Cream & White Perfection',
+    description: 'The ethereal beauty of The Substance manifests in this stunning litter of cream and white puppies. Each represents the transformative power and pure elegance of their legendary dam.',
+    sire: 'Champion Bloodline',
+    dam: 'The Substance',
+    birthDate: '2024-02-20',
+    readyDate: '2024-04-17',
+    status: 'Coming Soon',
+    colors: ['Cream', 'White', 'Cream & White'],
+    puppies: [
+      {
+        name: 'Seraphim',
+        color: 'Pure White',
+        gender: 'Female',
+        weight: '3.5 lbs',
+        price: '$6,000',
+        status: 'Pre-Order',
+        personality: 'Angelic beauty'
+      },
+      {
+        name: 'Ivory',
+        color: 'Cream',
+        gender: 'Male',
+        weight: '3.9 lbs',
+        price: '$5,800',
+        status: 'Pre-Order',
+        personality: 'Gentle soul'
+      }
+    ],
+    media: [
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1749873342_3654524932009186630_69185781706.jpg',
+        alt: 'Substance Ethereal cream and white puppy',
+        title: 'Seraphim - Female',
+        category: 'Pre-Order'
+      },
+      {
+        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1745766965_3620078140636059941_69185781706.jpg',
+        alt: 'Substance Ethereal cream puppy',
+        title: 'Ivory - Male',
+        category: 'Pre-Order'
+      }
+    ],
+    theme: 'substance'
+  }
+];
+
+// Puppy care information
+const puppyInfo = {
+  healthGuarantee: [
+    '2-year health guarantee',
+    'Veterinarian examined',
+    'Up-to-date vaccinations',
+    'Deworming protocol completed',
+    'Health certificate included'
+  ],
+  included: [
+    'AKC registration papers',
+    'Microchip identification',
+    'Starter puppy pack',
+    'Blanket with mother\'s scent',
+    'Lifetime breeder support'
+  ],
+  timeline: [
+    'Birth to 6 weeks: With mother',
+    '6-8 weeks: Weaning & socialization',
+    '8 weeks: First vaccinations',
+    '8-10 weeks: Ready for new homes',
+    '12 weeks: Second vaccinations'
+  ]
+};
+---
+
+<Layout title="Available Puppies | Maxline Bulldogs" description="Discover our available AKC Mini English Bulldog puppies from champion bloodlines. Each litter embodies the legendary spirit of their cinematic-inspired parents.">
+  <!-- Hero Section -->
+  <VideoHero 
+    videoSrc="/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1751796894_3670660760163400407_69185781706.mp4"
+    title="Welcome Home Your Legend"
+    subtitle="Premium AKC Mini English Bulldog Puppies"
+    overlay={true}
+    autoplay={true}
+    loop={true}
+    muted={true}
+    className="h-[70vh]"
+  />
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Introduction -->
+    <div class="text-center mb-16 fade-in">
+      <h1 class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-6">
+        Available Puppies
+      </h1>
+      <p class="text-xl text-silver max-w-3xl mx-auto leading-relaxed">
+        Each of our puppies is born from champion bloodlines and raised with the cinematic inspiration 
+        of their legendary parents. From the playful chaos of Joker's legacy to the ethereal beauty 
+        of The Substance, find your perfect companion.
+      </p>
+    </div>
+
+    <!-- Current Litters -->
+    <div class="space-y-24 mb-16">
+      {litters.map((litter, index) => (
+        <section class={`litter-section ${litter.theme} ${index % 2 === 0 ? 'slide-left' : 'slide-right'}`}>
+          <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-start ${index % 2 === 0 ? '' : 'lg:flex-row-reverse'}`}>
+            <!-- Litter Info -->
+            <div class={`${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
+              <div class="mb-8">
+                <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-2">
+                  {litter.name}
+                </h2>
+                <p class="text-xl text-silver mb-4 italic">
+                  {litter.subtitle}
+                </p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class={`px-3 py-1 rounded-full text-sm font-semibold ${
+                    litter.status === 'Available Now' ? 'bg-green-600 text-white' :
+                    litter.status === 'Ready Soon' ? 'bg-yellow-600 text-black' :
+                    'bg-blue-600 text-white'
+                  }`}>
+                    {litter.status}
+                  </span>
+                  {litter.colors.map(color => (
+                    <span class="px-3 py-1 bg-accent bg-opacity-20 text-accent rounded-full text-sm">
+                      {color}
+                    </span>
+                  ))}
+                </div>
+                <p class="text-lg text-white leading-relaxed mb-8">
+                  {litter.description}
+                </p>
+              </div>
+
+              <!-- Litter Details -->
+              <div class="bg-card-gradient p-6 rounded-lg border border-accent border-opacity-20 mb-8">
+                <h3 class="text-xl font-playfair font-semibold text-accent mb-4">
+                  Litter Information
+                </h3>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="border-b border-accent border-opacity-20 pb-2">
+                    <dt class="text-sm text-silver">Sire</dt>
+                    <dd class="text-lg text-white font-semibold">{litter.sire}</dd>
+                  </div>
+                  <div class="border-b border-accent border-opacity-20 pb-2">
+                    <dt class="text-sm text-silver">Dam</dt>
+                    <dd class="text-lg text-white font-semibold">{litter.dam}</dd>
+                  </div>
+                  <div class="border-b border-accent border-opacity-20 pb-2">
+                    <dt class="text-sm text-silver">Birth Date</dt>
+                    <dd class="text-lg text-white font-semibold">{litter.birthDate}</dd>
+                  </div>
+                  <div class="border-b border-accent border-opacity-20 pb-2">
+                    <dt class="text-sm text-silver">Ready Date</dt>
+                    <dd class="text-lg text-white font-semibold">{litter.readyDate}</dd>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Available Puppies -->
+              <div class="space-y-4">
+                <h3 class="text-xl font-playfair font-semibold text-accent mb-4">
+                  Available Puppies
+                </h3>
+                {litter.puppies.map(puppy => (
+                  <div class="bg-card-gradient p-4 rounded-lg border border-accent border-opacity-20">
+                    <div class="flex justify-between items-start mb-2">
+                      <div>
+                        <h4 class="text-lg font-playfair font-semibold text-white">{puppy.name}</h4>
+                        <p class="text-silver text-sm">{puppy.color} • {puppy.gender} • {puppy.weight}</p>
+                      </div>
+                      <div class="text-right">
+                        <p class="text-xl font-playfair font-bold text-accent">{puppy.price}</p>
+                        <span class={`px-2 py-1 rounded-full text-xs font-semibold ${
+                          puppy.status === 'Available' ? 'bg-green-600 text-white' :
+                          puppy.status === 'Reserved' ? 'bg-red-600 text-white' :
+                          'bg-blue-600 text-white'
+                        }`}>
+                          {puppy.status}
+                        </span>
+                      </div>
+                    </div>
+                    <p class="text-sm text-silver italic">{puppy.personality}</p>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Reserve Button -->
+              <!-- TODO: Integrate Stripe payment processing for puppy reservations -->
+              <div class="mt-8">
+                <a href="/contact" class="luxury-button inline-block">
+                  Reserve Your Puppy
+                </a>
+              </div>
+            </div>
+
+            <!-- Litter Gallery -->
+            <div class={`${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
+              <Gallery 
+                images={litter.media}
+                title={`${litter.name} Gallery`}
+                columns={2}
+                className="litter-gallery"
+              />
+            </div>
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <!-- Puppy Information Cards -->
+    <div class="responsive-grid mb-16">
+      <InfoCard 
+        title="Health Guarantee"
+        bio="Every puppy comes with our comprehensive health guarantee and veterinary care. We stand behind the health and quality of our champion bloodlines."
+        traits={puppyInfo.healthGuarantee}
+        buttonText="Learn More"
+        buttonAriaLabel="Learn more about our health guarantee"
+      />
+      
+      <InfoCard 
+        title="What's Included"
+        bio="Your puppy comes fully prepared for their new home with all necessary documentation, health certificates, and support materials."
+        traits={puppyInfo.included}
+        buttonText="View Details"
+        buttonAriaLabel="View what's included with your puppy"
+      />
+      
+      <InfoCard 
+        title="Puppy Timeline"
+        bio="From birth to bringing your puppy home, we follow a careful timeline to ensure proper development, health, and socialization."
+        traits={puppyInfo.timeline}
+        buttonText="Contact Us"
+        buttonAriaLabel="Contact us about the puppy timeline"
+      />
+    </div>
+
+    <!-- Reservation Process -->
+    <div class="bg-card-gradient p-12 rounded-lg border border-accent border-opacity-20 text-center">
+      <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
+        Reservation Process
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-2xl font-playfair font-bold text-charcoal">1</span>
+          </div>
+          <h3 class="text-xl font-playfair font-semibold text-white mb-2">Choose Your Puppy</h3>
+          <p class="text-silver">Browse our available puppies and find your perfect match</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-2xl font-playfair font-bold text-charcoal">2</span>
+          </div>
+          <h3 class="text-xl font-playfair font-semibold text-white mb-2">Place Deposit</h3>
+          <p class="text-silver">Secure your reservation with a $500 deposit</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-2xl font-playfair font-bold text-charcoal">3</span>
+          </div>
+          <h3 class="text-xl font-playfair font-semibold text-white mb-2">Welcome Home</h3>
+          <p class="text-silver">Pick up your puppy when ready or arrange delivery</p>
+        </div>
+      </div>
+      <p class="text-xl text-silver mb-8 max-w-2xl mx-auto">
+        Ready to welcome your legend home? Contact us today to reserve your puppy from our champion bloodlines.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/contact" class="luxury-button">
+          Start Reservation
+        </a>
+        <a href="/about" class="luxury-button">
+          Learn About Us
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call to Action Banner -->
+  <div class="mt-16">
+    <Banner 
+      text="Your legend awaits. Join the exclusive family of Maxline Bulldogs owners today."
+    />
+  </div>
+</Layout>
+
+<style>
+  /* Litter Section Animations */
+  .litter-section {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  .slide-left {
+    animation-delay: 0.2s;
+  }
+
+  .slide-right {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Theme-specific styling */
+  .litter-section.joker {
+    border-left: 4px solid #D2691E;
+  }
+
+  .litter-section.hannibal {
+    border-left: 4px solid #2F2F2F;
+  }
+
+  .litter-section.substance {
+    border-left: 4px solid #F5F5DC;
+  }
+
+  .litter-section.nirvana {
+    border-left: 4px solid #9370DB;
+  }
+
+  .litter-section.sandman {
+    border-left: 4px solid #D4AF37;
+  }
+
+  .litter-section.harley {
+    border-left: 4px solid #FF69B4;
+  }
+
+  /* Gallery styling */
+  .litter-gallery {
+    position: relative;
+  }
+
+  .litter-gallery::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(45deg, #D4AF37, #4169E1);
+    border-radius: 10px;
+    opacity: 0.1;
+    z-index: -1;
+  }
+
+  /* Hover effects */
+  .litter-section:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+  }
+
+  .litter-section:hover .litter-gallery::before {
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Enhanced typography */
+  .litter-section h2 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .litter-section .italic {
+    font-style: italic;
+    color: #C0C0C0;
+  }
+
+  /* Puppy card styling */
+  .litter-section .bg-card-gradient {
+    transition: all 0.3s ease;
+  }
+
+  .litter-section .bg-card-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+  }
+
+  /* Status badges */
+  .litter-section span {
+    transition: all 0.3s ease;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    .litter-section .lg\:order-1,
+    .litter-section .lg\:order-2 {
+      order: initial !important;
+    }
+  }
+
+  /* Reservation process styling */
+  .reservation-step {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+
+  .reservation-step:nth-child(1) {
+    animation-delay: 0.2s;
+  }
+
+  .reservation-step:nth-child(2) {
+    animation-delay: 0.4s;
+  }
+
+  .reservation-step:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+
+  /* Enhanced mobile responsiveness */
+  @media (max-width: 768px) {
+    .litter-section {
+      padding: 1rem;
+    }
+    
+    .litter-section h2 {
+      font-size: 2rem;
+    }
+    
+    .litter-section .grid {
+      gap: 1rem;
+    }
+  }
+</style> 

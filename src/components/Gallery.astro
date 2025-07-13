@@ -1,0 +1,195 @@
+---
+export interface Props {
+  images: Array<{
+    src: string;
+    alt: string;
+    title?: string;
+    category?: string;
+  }>;
+  title?: string;
+  className?: string;
+  columns?: number;
+}
+
+const { images, title, className = '', columns = 3 } = Astro.props;
+const gridCols = columns === 2 ? 'grid-cols-2' : columns === 4 ? 'grid-cols-4' : 'grid-cols-3';
+---
+
+<div class={`gallery-container ${className}`}>
+  {title && (
+    <h3 class="text-2xl font-playfair text-accent mb-6 text-center">{title}</h3>
+  )}
+  
+  <div class={`grid ${gridCols} gap-4 md:gap-6`}>
+    {images.map((image, index) => (
+      <div class="gallery-item group cursor-pointer relative overflow-hidden rounded-lg shadow-luxury hover:shadow-gold transition-all duration-300">
+        <img 
+          src={image.src}
+          alt={image.alt}
+          class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+          onclick={`openLightbox(${index})`}
+        />
+        <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          {image.title && (
+            <h4 class="font-playfair text-lg mb-1">{image.title}</h4>
+          )}
+          {image.category && (
+            <span class="text-sm text-accent">{image.category}</span>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center">
+  <div class="relative max-w-4xl max-h-full p-4">
+    <button 
+      id="lightbox-close" 
+      class="absolute top-4 right-4 text-white text-4xl hover:text-accent transition-colors z-10"
+      onclick="closeLightbox()"
+    >
+      &times;
+    </button>
+    
+    <button 
+      id="lightbox-prev" 
+      class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl hover:text-accent transition-colors z-10"
+      onclick="prevImage()"
+    >
+      &#8249;
+    </button>
+    
+    <button 
+      id="lightbox-next" 
+      class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl hover:text-accent transition-colors z-10"
+      onclick="nextImage()"
+    >
+      &#8250;
+    </button>
+    
+    <img 
+      id="lightbox-image" 
+      class="max-w-full max-h-full object-contain"
+      src=""
+      alt=""
+    />
+    
+    <div class="text-center mt-4 text-white">
+      <h4 id="lightbox-title" class="font-playfair text-xl mb-2"></h4>
+      <span id="lightbox-category" class="text-accent"></span>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  // Gallery images data for lightbox
+  const galleryImages = JSON.parse(document.querySelector('#gallery-data')?.textContent || '[]');
+  let currentImageIndex = 0;
+
+  function openLightbox(index) {
+    currentImageIndex = index;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxCategory = document.getElementById('lightbox-category');
+    
+    if (!lightbox || !lightboxImage || !lightboxTitle || !lightboxCategory) return;
+    
+    const image = galleryImages[index];
+    if (!image) return;
+    
+    lightboxImage.src = image.src;
+    lightboxImage.alt = image.alt;
+    lightboxTitle.textContent = image.title || '';
+    lightboxCategory.textContent = image.category || '';
+    
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox) return;
+    
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = 'auto';
+  }
+
+  function prevImage() {
+    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+    openLightbox(currentImageIndex);
+  }
+
+  function nextImage() {
+    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+    openLightbox(currentImageIndex);
+  }
+
+  // Close lightbox on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeLightbox();
+    } else if (e.key === 'ArrowLeft') {
+      prevImage();
+    } else if (e.key === 'ArrowRight') {
+      nextImage();
+    }
+  });
+
+  // Close lightbox on background click
+  document.getElementById('lightbox')?.addEventListener('click', (e) => {
+    if (e.target && e.target.id === 'lightbox') {
+      closeLightbox();
+    }
+  });
+</script>
+
+<!-- Pass image data to JavaScript -->
+<script id="gallery-data" type="application/json" is:inline set:html={JSON.stringify(images)}></script>
+
+<style>
+  .gallery-item {
+    aspect-ratio: 1;
+  }
+  
+  .gallery-item img {
+    transition: transform 0.3s ease;
+  }
+  
+  .gallery-item:hover img {
+    transform: scale(1.05);
+  }
+  
+  #lightbox {
+    backdrop-filter: blur(5px);
+  }
+  
+  #lightbox-image {
+    max-height: 80vh;
+    max-width: 80vw;
+  }
+  
+  /* Custom scrollbar for gallery */
+  .gallery-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .gallery-container::-webkit-scrollbar-track {
+    background: #1a1a1a;
+  }
+  
+  .gallery-container::-webkit-scrollbar-thumb {
+    background: #D4AF37;
+    border-radius: 4px;
+  }
+  
+  .gallery-container::-webkit-scrollbar-thumb:hover {
+    background: #B8941F;
+  }
+</style> 

@@ -1,0 +1,346 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+  image?: string;
+  imageAlt?: string;
+  url?: string;
+  type?: 'website' | 'article' | 'product';
+  price?: string;
+  currency?: string;
+  availability?: 'InStock' | 'OutOfStock' | 'PreOrder';
+  brand?: string;
+  category?: string;
+}
+
+const {
+  title,
+  description,
+  keywords = 'AKC Mini English Bulldogs, Champion Bloodlines, Premium Bulldogs, HorrorBullz HQ, Luxury Dog Breeding, Joker, Nirvana, Hannibal, The Substance, The Sandman, Harley Quinn',
+  image = '/images/branding/maxline-bulldogs-og.jpg',
+  imageAlt = 'Maxline Bulldogs - Premium AKC Mini English Bulldogs',
+  url = Astro.url.href,
+  type = 'website',
+  price,
+  currency = 'USD',
+  availability = 'InStock',
+  brand = 'Maxline Bulldogs',
+  category = 'Premium Dog Breeding'
+} = Astro.props;
+
+// Ensure title and description are optimized
+const optimizedTitle = title.length > 60 ? title.substring(0, 57) + '...' : title;
+const optimizedDescription = description.length > 160 ? description.substring(0, 157) + '...' : description;
+
+// Generate canonical URL
+const canonicalUrl = new URL(url, Astro.site || 'https://maxlinebulldogs.com').href;
+
+// Generate structured data for local business
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "PetStore",
+  "name": "Maxline Bulldogs",
+  "description": "Premium AKC Mini English Bulldogs from Champion Bloodlines",
+  "brand": {
+    "@type": "Brand",
+    "name": "Maxline Bulldogs"
+  },
+  "logo": "/images/branding/maxline-bulldogs-logo.jpg",
+  "image": image,
+  "url": canonicalUrl,
+  "telephone": "(555) 123-4567",
+  "email": "info@maxlinebulldogs.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "US"
+  },
+  "openingHours": [
+    "Mo-Fr 09:00-19:00",
+    "Sa-Su 10:00-17:00"
+  ],
+  "priceRange": "$4,000-$6,000",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Champion AKC Mini English Bulldogs",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Product",
+          "name": "AKC Mini English Bulldog Puppies",
+          "category": "Dogs",
+          "brand": brand
+        }
+      }
+    ]
+  },
+  "makesOffer": {
+    "@type": "Offer",
+    "itemOffered": {
+      "@type": "Service",
+      "name": "Premium Dog Breeding Services",
+      "category": "Pet Services"
+    }
+  }
+};
+
+// Generate product schema if price is provided
+const productSchema = price ? {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": title,
+  "description": description,
+  "brand": {
+    "@type": "Brand",
+    "name": brand
+  },
+  "image": image,
+  "offers": {
+    "@type": "Offer",
+    "price": price.replace(/[^0-9.]/g, ''),
+    "priceCurrency": currency,
+    "availability": `https://schema.org/${availability}`,
+    "url": canonicalUrl,
+    "seller": {
+      "@type": "Organization",
+      "name": "Maxline Bulldogs"
+    }
+  },
+  "category": category,
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "Breed",
+      "value": "Mini English Bulldog"
+    },
+    {
+      "@type": "PropertyValue", 
+      "name": "Registry",
+      "value": "AKC"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Health Guarantee",
+      "value": "2 Year"
+    }
+  ]
+} : null;
+---
+
+<!-- Primary Meta Tags -->
+<title>{optimizedTitle}</title>
+<meta name="title" content={optimizedTitle} />
+<meta name="description" content={optimizedDescription} />
+<meta name="keywords" content={keywords} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={optimizedTitle} />
+<meta property="og:description" content={optimizedDescription} />
+<meta property="og:image" content={new URL(image, Astro.site || 'https://maxlinebulldogs.com').href} />
+<meta property="og:image:alt" content={imageAlt} />
+<meta property="og:site_name" content="Maxline Bulldogs" />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalUrl} />
+<meta name="twitter:title" content={optimizedTitle} />
+<meta name="twitter:description" content={optimizedDescription} />
+<meta name="twitter:image" content={new URL(image, Astro.site || 'https://maxlinebulldogs.com').href} />
+<meta name="twitter:image:alt" content={imageAlt} />
+<meta name="twitter:creator" content="@maxlinebulldogs" />
+<meta name="twitter:site" content="@maxlinebulldogs" />
+
+<!-- Additional Meta Tags for Luxury Branding -->
+<meta name="author" content="Maxline Bulldogs" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="googlebot" content="index, follow" />
+
+<!-- Mobile & App Meta Tags -->
+<meta name="theme-color" content="#4169E1" />
+<meta name="msapplication-TileColor" content="#4169E1" />
+<meta name="msapplication-navbutton-color" content="#4169E1" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Maxline Bulldogs" />
+
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+
+<!-- Preconnect to External Domains -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- DNS Prefetch for Performance -->
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+<link rel="dns-prefetch" href="https://www.google-analytics.com" />
+
+<!-- Structured Data -->
+<script type="application/ld+json" is:inline set:html={JSON.stringify(localBusinessSchema)} />
+{productSchema && (
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(productSchema)} />
+)}
+
+<!-- Additional Schema for Breeding -->
+<script type="application/ld+json" is:inline>
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Maxline Bulldogs",
+  "alternateName": "Maxline Bulldogs × HorrorBullz HQ",
+  "description": "Premium AKC Mini English Bulldogs from Champion Bloodlines in Partnership with HorrorBullz HQ",
+  "url": "https://maxlinebulldogs.com",
+  "logo": "/images/branding/maxline-bulldogs-logo.jpg",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "(555) 123-4567",
+    "contactType": "customer service",
+    "email": "info@maxlinebulldogs.com",
+    "availableLanguage": "English"
+  },
+  "sameAs": [
+    "https://www.instagram.com/maxlinebulldogs",
+    "https://www.facebook.com/maxlinebulldogs"
+  ],
+  "foundingDate": "2020",
+  "founder": {
+    "@type": "Person",
+    "name": "Mike"
+  },
+  "numberOfEmployees": "2-10",
+  "slogan": "Where Legends Are Bred",
+  "knowsAbout": [
+    "AKC Mini English Bulldogs",
+    "Champion Bloodlines",
+    "Dog Breeding",
+    "Premium Pet Services",
+    "Health Clearances",
+    "Genetic Testing"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Premium Bulldogs & Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Product",
+          "name": "AKC Mini English Bulldog Puppies",
+          "category": "Dogs",
+          "offers": {
+            "@type": "AggregateOffer",
+            "lowPrice": "4000",
+            "highPrice": "6000",
+            "priceCurrency": "USD"
+          }
+        }
+      },
+      {
+        "@type": "Offer", 
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Stud Services",
+          "category": "Pet Services",
+          "offers": {
+            "@type": "AggregateOffer",
+            "lowPrice": "2500",
+            "highPrice": "3500", 
+            "priceCurrency": "USD"
+          }
+        }
+      }
+    ]
+  }
+}
+</script>
+
+<!-- Luxury Brand Enhancement -->
+<meta name="format-detection" content="telephone=yes" />
+<meta name="pinterest" content="nopin" />
+
+<!-- Performance Hints -->
+<link rel="preload" href="/fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+
+<!-- Security Headers -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<meta http-equiv="X-Frame-Options" content="DENY" />
+<meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+
+<!-- Rich Snippets for Local Business -->
+<meta name="geo.region" content="US" />
+<meta name="geo.placename" content="Premium Breeding Facility" />
+<meta name="ICBM" content="40.7128,-74.0060" />
+
+<!-- Additional Open Graph for Rich Previews -->
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="article:author" content="Maxline Bulldogs" />
+<meta property="article:publisher" content="https://www.facebook.com/maxlinebulldogs" />
+
+<!-- Accessibility -->
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#4169E1" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1a1a1a" />
+
+<!-- Additional Twitter Card Data -->
+<meta name="twitter:app:name:iphone" content="Maxline Bulldogs" />
+<meta name="twitter:app:name:googleplay" content="Maxline Bulldogs" />
+
+<!-- Content Language -->
+<meta http-equiv="content-language" content="en-US" />
+
+<!-- Cache Control for Assets -->
+<meta http-equiv="Cache-Control" content="public, max-age=31536000" />
+
+<!-- Enhanced Search Engine Directives -->
+<meta name="revisit-after" content="7 days" />
+<meta name="distribution" content="web" />
+<meta name="rating" content="general" />
+
+<!-- Luxury Brand Specific -->
+<meta name="price" content={price ? `${price} ${currency}` : 'Contact for pricing'} />
+<meta name="availability" content={availability} />
+<meta name="brand" content={brand} />
+<meta name="category" content="Luxury Pet Services" />
+
+<style>
+  /* Prevent flash of unstyled content */
+  html {
+    visibility: hidden;
+    opacity: 0;
+  }
+  
+  html.loaded {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+</style>
+
+<script is:inline>
+  // Mark page as loaded for smooth transition
+  document.addEventListener('DOMContentLoaded', () => {
+    document.documentElement.classList.add('loaded');
+  });
+  
+  // Enhanced SEO tracking for luxury brand
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('config', 'GA_MEASUREMENT_ID', {
+      page_title: document.title,
+      page_location: window.location.href,
+      content_group1: 'Luxury Dog Breeding',
+      content_group2: 'AKC Mini English Bulldogs'
+    });
+  }
+</script> 

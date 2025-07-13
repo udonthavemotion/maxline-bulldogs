@@ -1,0 +1,463 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Gallery from '../components/Gallery.astro';
+import VideoHero from '../components/VideoHero.astro';
+import Banner from '../components/Banner.astro';
+
+// Partnership showcase media
+const partnershipMedia = [
+  {
+    src: '/maxlinebulldogs insta/horrorbullzhq/American Psyqo.jpg',
+    alt: 'American Psycho inspiration for luxury breeding standards',
+    title: 'Luxury Standards',
+    category: 'Inspiration'
+  },
+  {
+    src: '/maxlinebulldogs insta/horrorbullzhq/Leprechaun.jpg',
+    alt: 'Leprechaun character inspiration from HorrorBullz HQ',
+    title: 'Character Inspiration',
+    category: 'Cinema'
+  },
+  {
+    src: '/maxlinebulldogs insta/horrorbullzhq/Joker.jpg',
+    alt: 'Joker inspiration for chocolate bulldogs',
+    title: 'Joker Legacy',
+    category: 'Bloodline'
+  },
+  {
+    src: '/maxlinebulldogs insta/horrorbullzhq/Hannibal Lecter.jpg',
+    alt: 'Hannibal Lecter inspiration for dark brindle bloodlines',
+    title: 'Hannibal Sophistication',
+    category: 'Elegance'
+  },
+  {
+    src: '/maxlinebulldogs insta/horrorbullzhq/Substance.jpg',
+    alt: 'The Substance inspiration for ethereal beauty',
+    title: 'Ethereal Beauty',
+    category: 'Transformation'
+  },
+  {
+    src: '/maxlinebulldogs insta/horrorbullzhq/substance1.jpg',
+    alt: 'The Substance character development inspiration',
+    title: 'Character Development',
+    category: 'Evolution'
+  }
+];
+
+// Team information
+const team = {
+  mike: {
+    name: 'Mike',
+    title: 'Master Breeder & HorrorBullz HQ Partner',
+    bio: 'With over a decade of experience in premium bulldog breeding, Mike brings unparalleled expertise in champion bloodlines and ethical breeding practices. His partnership with HorrorBullz HQ has created some of the most sought-after Mini English Bulldogs in the industry.',
+    specialties: [
+      'Champion Bloodline Development',
+      'Health Screening & Genetics',
+      'Behavioral Assessment',
+      'Breeding Program Management'
+    ]
+  },
+  horrorbullzhq: {
+    name: 'HorrorBullz HQ',
+    title: 'Cinematic Breeding Innovation Partner',
+    bio: 'HorrorBullz HQ brings the creative vision and cinematic inspiration that sets our breeding program apart. Their unique approach combines legendary film character traits with premium bulldog genetics, creating dogs with both exceptional bloodlines and distinctive personalities.',
+    specialties: [
+      'Character-Inspired Breeding',
+      'Cinematic Bloodline Development',
+      'Creative Naming & Branding',
+      'Premium Stud Management'
+    ]
+  }
+};
+
+// Our values and commitments
+const values = [
+  {
+    title: 'Champion Bloodlines',
+    description: 'Every dog in our program comes from verified AKC champion bloodlines with documented health clearances and genetic testing.',
+    icon: '🏆'
+  },
+  {
+    title: 'Cinematic Inspiration',
+    description: 'Our unique partnership brings legendary film character traits into our breeding program, creating dogs with distinctive personalities.',
+    icon: '🎭'
+  },
+  {
+    title: 'Health First',
+    description: 'Comprehensive health screening, genetic testing, and veterinary care ensure every puppy meets our premium health standards.',
+    icon: '❤️'
+  },
+  {
+    title: 'Lifetime Support',
+    description: 'Our commitment extends beyond sale with lifetime breeder support, health guarantees, and ongoing guidance for owners.',
+    icon: '🤝'
+  },
+  {
+    title: 'Ethical Practices',
+    description: 'We maintain the highest standards of ethical breeding with proper socialization, care, and responsible placement.',
+    icon: '✨'
+  },
+  {
+    title: 'Luxury Experience',
+    description: 'From first contact to bringing your puppy home, we provide a premium experience that reflects our commitment to excellence.',
+    icon: '💎'
+  }
+];
+---
+
+<Layout title="About Us | Maxline Bulldogs" description="Learn about Maxline Bulldogs and our exclusive partnership with HorrorBullz HQ. Discover our commitment to champion bloodlines, cinematic inspiration, and luxury breeding standards.">
+  <!-- Hero Section -->
+  <VideoHero 
+    videoSrc="/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1746014689_3622155883351801713_69185781706.mp4"
+    title="Where Legends Are Bred"
+    subtitle="The Story Behind Maxline Bulldogs × HorrorBullz HQ"
+    overlay={true}
+    autoplay={true}
+    loop={true}
+    muted={true}
+    className="h-[70vh]"
+  />
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    
+    <!-- Our Story Section -->
+    <section class="mb-24">
+      <div class="text-center mb-16 fade-in">
+        <h1 class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-6">
+          Our Story
+        </h1>
+        <p class="text-xl text-silver max-w-3xl mx-auto leading-relaxed">
+          The fusion of champion bloodlines and cinematic inspiration creates something extraordinary. 
+          Discover how Maxline Bulldogs and HorrorBullz HQ came together to redefine luxury breeding.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
+        <div class="slide-up">
+          <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
+            A Legendary Partnership
+          </h2>
+          <div class="space-y-6 text-lg text-white leading-relaxed">
+            <p>
+              Maxline Bulldogs began with a simple vision: to breed AKC Mini English Bulldogs that embody 
+              both champion genetics and legendary character. When we partnered with HorrorBullz HQ, 
+              that vision transformed into something extraordinary.
+            </p>
+            <p>
+              Our collaboration brings together Mike's decade of breeding expertise with HorrorBullz HQ's 
+              creative vision, resulting in dogs that carry the dramatic presence of iconic film characters 
+              while maintaining the highest standards of health and conformation.
+            </p>
+            <p>
+              Each of our champion studs - Joker, Nirvana, Hannibal, The Substance, The Sandman, and 
+              Harley Quinn - represents this unique fusion of cinematic inspiration and championship bloodlines.
+            </p>
+          </div>
+        </div>
+        
+        <div class="slide-up">
+          <Gallery 
+            images={partnershipMedia.slice(0, 4)}
+            title="Partnership Inspiration"
+            columns={2}
+            className="partnership-gallery"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="mb-24">
+      <div class="text-center mb-16 fade-in">
+        <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
+          Meet Our Team
+        </h2>
+        <p class="text-xl text-silver max-w-2xl mx-auto">
+          The passionate experts behind every champion bloodline and cinematic inspiration.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Mike Profile -->
+        <div class="bg-card-gradient p-8 rounded-lg border border-accent border-opacity-20 slide-left">
+          <div class="text-center mb-6">
+            <div class="w-24 h-24 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-3xl font-playfair font-bold text-charcoal">M</span>
+            </div>
+            <h3 class="text-2xl font-playfair font-bold text-accent mb-2">{team.mike.name}</h3>
+            <p class="text-silver italic">{team.mike.title}</p>
+          </div>
+          <p class="text-white leading-relaxed mb-6">{team.mike.bio}</p>
+          <div>
+            <h4 class="text-lg font-playfair font-semibold text-accent mb-3">Specialties</h4>
+            <ul class="space-y-2">
+              {team.mike.specialties.map(specialty => (
+                <li class="flex items-center text-silver">
+                  <span class="text-accent mr-2">▪</span>
+                  {specialty}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <!-- HorrorBullz HQ Profile -->
+        <div class="bg-card-gradient p-8 rounded-lg border border-accent border-opacity-20 slide-right">
+          <div class="text-center mb-6">
+            <div class="w-24 h-24 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-playfair font-bold text-charcoal">HB</span>
+            </div>
+            <h3 class="text-2xl font-playfair font-bold text-accent mb-2">{team.horrorbullzhq.name}</h3>
+            <p class="text-silver italic">{team.horrorbullzhq.title}</p>
+          </div>
+          <p class="text-white leading-relaxed mb-6">{team.horrorbullzhq.bio}</p>
+          <div>
+            <h4 class="text-lg font-playfair font-semibold text-accent mb-3">Specialties</h4>
+            <ul class="space-y-2">
+              {team.horrorbullzhq.specialties.map(specialty => (
+                <li class="flex items-center text-silver">
+                  <span class="text-accent mr-2">▪</span>
+                  {specialty}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="mb-24">
+      <div class="text-center mb-16 fade-in">
+        <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
+          Our Values & Commitments
+        </h2>
+        <p class="text-xl text-silver max-w-2xl mx-auto">
+          The principles that guide every breeding decision and shape every interaction with our bulldogs and their families.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {values.map((value, index) => (
+          <div class={`bg-card-gradient p-6 rounded-lg border border-accent border-opacity-20 text-center hover:transform hover:scale-105 transition-all duration-300 fade-in`} style={`animation-delay: ${index * 0.1}s`}>
+            <div class="text-4xl mb-4">{value.icon}</div>
+            <h3 class="text-xl font-playfair font-bold text-accent mb-3">{value.title}</h3>
+            <p class="text-silver leading-relaxed">{value.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Cinematic Inspiration Gallery -->
+    <section class="mb-24">
+      <div class="text-center mb-16 fade-in">
+        <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
+          Cinematic Inspiration
+        </h2>
+        <p class="text-xl text-silver max-w-2xl mx-auto">
+          Explore the legendary film characters that inspire our champion bloodlines and shape our breeding philosophy.
+        </p>
+      </div>
+      
+      <Gallery 
+        images={partnershipMedia}
+        title="Character Gallery"
+        columns={3}
+        className="inspiration-gallery mb-8"
+      />
+    </section>
+
+    <!-- Statistics & Achievements -->
+    <section class="mb-24">
+      <div class="bg-card-gradient p-12 rounded-lg border border-accent border-opacity-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
+            Our Achievements
+          </h2>
+          <p class="text-xl text-silver">
+            Numbers that reflect our commitment to excellence in every aspect of breeding.
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div class="fade-in">
+            <div class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-2">10+</div>
+            <p class="text-silver">Years Experience</p>
+          </div>
+          <div class="fade-in" style="animation-delay: 0.1s">
+            <div class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-2">6</div>
+            <p class="text-silver">Champion Studs</p>
+          </div>
+          <div class="fade-in" style="animation-delay: 0.2s">
+            <div class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-2">50+</div>
+            <p class="text-silver">Happy Families</p>
+          </div>
+          <div class="fade-in" style="animation-delay: 0.3s">
+            <div class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-2">100%</div>
+            <p class="text-silver">Health Guarantee</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <div class="text-center fade-in">
+      <div class="bg-card-gradient p-12 rounded-lg border border-accent border-opacity-20">
+        <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
+          Ready to Welcome Your Legend?
+        </h2>
+        <p class="text-xl text-silver mb-8 max-w-2xl mx-auto">
+          Join our exclusive family of Maxline Bulldogs owners and experience the luxury of champion bloodlines 
+          with cinematic inspiration.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/contact" class="luxury-button">
+            Contact Us Today
+          </a>
+          <a href="/studs" class="luxury-button">
+            Meet Our Champions
+          </a>
+          <a href="/puppies" class="luxury-button">
+            View Available Puppies
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Final Banner -->
+  <div class="mt-16">
+    <Banner 
+      text="Powered by the legendary partnership of Maxline Bulldogs × HorrorBullz HQ - Where cinema meets championship."
+    />
+  </div>
+</Layout>
+
+<style>
+  /* Enhanced animations */
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+  }
+
+  .slide-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 1s ease-out forwards;
+    animation-delay: 0.3s;
+  }
+
+  .slide-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: slideLeft 1s ease-out forwards;
+    animation-delay: 0.2s;
+  }
+
+  .slide-right {
+    opacity: 0;
+    transform: translateX(30px);
+    animation: slideRight 1s ease-out forwards;
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideLeft {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideRight {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Gallery styling */
+  .partnership-gallery::before,
+  .inspiration-gallery::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(45deg, #D4AF37, #4169E1);
+    border-radius: 10px;
+    opacity: 0.1;
+    z-index: -1;
+  }
+
+  /* Team profile styling */
+  .bg-card-gradient:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.15);
+  }
+
+  /* Values grid hover effects */
+  .grid > div:hover {
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+  }
+
+  /* Enhanced typography */
+  .font-playfair {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Statistics section */
+  .grid .fade-in div {
+    background: linear-gradient(135deg, #D4AF37, #4169E1);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .slide-left,
+    .slide-right {
+      transform: translateY(30px);
+      animation: slideUp 1s ease-out forwards;
+    }
+    
+    .grid {
+      gap: 1rem;
+    }
+    
+    .text-4xl {
+      font-size: 2rem;
+    }
+    
+    .text-5xl {
+      font-size: 2.5rem;
+    }
+  }
+
+  /* Enhanced mobile experience */
+  @media (max-width: 640px) {
+    .bg-card-gradient {
+      padding: 1.5rem;
+    }
+    
+    .partnership-gallery,
+    .inspiration-gallery {
+      margin: 0 -1rem;
+    }
+  }
+</style> 

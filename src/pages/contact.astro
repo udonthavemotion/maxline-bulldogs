@@ -1,0 +1,527 @@
+---
+import Layout from '../layouts/Layout.astro';
+import VideoHero from '../components/VideoHero.astro';
+import Banner from '../components/Banner.astro';
+
+// Contact information
+const contactInfo = {
+  phone: '(555) 123-4567',
+  email: 'info@maxlinebulldogs.com',
+  location: 'Premium Breeding Facility',
+  hours: {
+    weekdays: '9:00 AM - 7:00 PM',
+    weekends: '10:00 AM - 5:00 PM',
+    emergency: '24/7 Support for Owners'
+  }
+};
+
+// Services for contact
+const services = [
+  {
+    title: 'Puppy Reservations',
+    description: 'Reserve your legendary puppy from our champion bloodlines',
+    icon: '🐕',
+    action: 'Reserve Now'
+  },
+  {
+    title: 'Stud Services',
+    description: 'Professional breeding services with our champion studs',
+    icon: '👑',
+    action: 'Book Service'
+  },
+  {
+    title: 'Owner Support',
+    description: 'Lifetime support and guidance for Maxline Bulldogs families',
+    icon: '🤝',
+    action: 'Get Support'
+  },
+  {
+    title: 'General Inquiries',
+    description: 'Questions about our breeding program or partnership',
+    icon: '💬',
+    action: 'Ask Question'
+  }
+];
+---
+
+<Layout title="Contact Us | Maxline Bulldogs" description="Contact Maxline Bulldogs for puppy reservations, stud services, or questions about our champion AKC Mini English Bulldogs. Professional breeding support available 24/7.">
+  <!-- Hero Section with Subtle Background Video -->
+  <div class="relative">
+    <VideoHero 
+      videoSrc="/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1746312294_3624646322620795207_69185781706.mp4"
+      title="Contact Our Legends"
+      subtitle="Ready to Welcome Your Champion Home?"
+      overlay={true}
+      autoplay={true}
+      loop={true}
+      muted={true}
+      className="h-[60vh]"
+    />
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    
+    <!-- Introduction -->
+    <div class="text-center mb-16 fade-in">
+      <h1 class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-6">
+        Let's Connect
+      </h1>
+      <p class="text-xl text-silver max-w-3xl mx-auto leading-relaxed">
+        Whether you're ready to reserve your legendary puppy, book stud services, or simply have questions 
+        about our champion bloodlines, we're here to help you join the Maxline Bulldogs family.
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <section class="mb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {services.map((service, index) => (
+          <div class={`bg-card-gradient p-6 rounded-lg border border-accent border-opacity-20 text-center hover:transform hover:scale-105 transition-all duration-300 fade-in`} style={`animation-delay: ${index * 0.1}s`}>
+            <div class="text-4xl mb-4">{service.icon}</div>
+            <h3 class="text-xl font-playfair font-bold text-accent mb-3">{service.title}</h3>
+            <p class="text-silver leading-relaxed mb-4">{service.description}</p>
+            <button class="text-accent font-semibold hover:text-gold transition-colors">{service.action}</button>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Contact Form and Info Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
+      
+      <!-- Contact Form -->
+      <div class="slide-left">
+        <div class="bg-card-gradient p-8 rounded-lg border border-accent border-opacity-20">
+          <h2 class="text-3xl font-playfair font-bold text-accent mb-6">
+            Send Us a Message
+          </h2>
+          <!-- TODO: Integrate with email service (EmailJS, Formspree, or custom API) -->
+          <form class="luxury-form space-y-6" action="#" method="POST">
+            <!-- Name Fields -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="firstName" class="block text-silver font-semibold mb-2">First Name *</label>
+                <input 
+                  type="text" 
+                  id="firstName" 
+                  name="firstName" 
+                  required
+                  class="w-full p-3 rounded-lg bg-charcoal border border-accent border-opacity-30 text-white focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-20 transition-all"
+                  placeholder="Your first name"
+                />
+              </div>
+              <div>
+                <label for="lastName" class="block text-silver font-semibold mb-2">Last Name *</label>
+                <input 
+                  type="text" 
+                  id="lastName" 
+                  name="lastName" 
+                  required
+                  class="w-full p-3 rounded-lg bg-charcoal border border-accent border-opacity-30 text-white focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-20 transition-all"
+                  placeholder="Your last name"
+                />
+              </div>
+            </div>
+
+            <!-- Contact Fields -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="email" class="block text-silver font-semibold mb-2">Email *</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  required
+                  class="w-full p-3 rounded-lg bg-charcoal border border-accent border-opacity-30 text-white focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-20 transition-all"
+                  placeholder="your.email@example.com"
+                />
+              </div>
+              <div>
+                <label for="phone" class="block text-silver font-semibold mb-2">Phone</label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  name="phone"
+                  class="w-full p-3 rounded-lg bg-charcoal border border-accent border-opacity-30 text-white focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-20 transition-all"
+                  placeholder="(555) 123-4567"
+                />
+              </div>
+            </div>
+
+            <!-- Subject -->
+            <div>
+              <label for="subject" class="block text-silver font-semibold mb-2">Subject *</label>
+              <select 
+                id="subject" 
+                name="subject" 
+                required
+                class="w-full p-3 rounded-lg bg-charcoal border border-accent border-opacity-30 text-white focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-20 transition-all"
+              >
+                <option value="">Please select a subject</option>
+                <option value="puppy-reservation">Puppy Reservation</option>
+                <option value="stud-services">Stud Services</option>
+                <option value="owner-support">Owner Support</option>
+                <option value="general-inquiry">General Inquiry</option>
+                <option value="partnership">Partnership Opportunity</option>
+              </select>
+            </div>
+
+            <!-- Specific Interest -->
+            <div>
+              <label for="interest" class="block text-silver font-semibold mb-2">Specific Interest</label>
+              <select 
+                id="interest" 
+                name="interest"
+                class="w-full p-3 rounded-lg bg-charcoal border border-accent border-opacity-30 text-white focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-20 transition-all"
+              >
+                <option value="">Select if applicable</option>
+                <option value="joker">Joker Bloodline</option>
+                <option value="nirvana">Nirvana Bloodline</option>
+                <option value="hannibal">Hannibal Bloodline</option>
+                <option value="substance">The Substance Bloodline</option>
+                <option value="sandman">The Sandman Bloodline</option>
+                <option value="harley">Harley Quinn Bloodline</option>
+                <option value="any">Any Available</option>
+              </select>
+            </div>
+
+            <!-- Message -->
+            <div>
+              <label for="message" class="block text-silver font-semibold mb-2">Message *</label>
+              <textarea 
+                id="message" 
+                name="message" 
+                rows="5" 
+                required
+                class="w-full p-3 rounded-lg bg-charcoal border border-accent border-opacity-30 text-white focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-20 transition-all resize-none"
+                placeholder="Tell us about your interest in Maxline Bulldogs, timeline, preferences, or any questions you have..."
+              ></textarea>
+            </div>
+
+            <!-- Budget Range (Optional) -->
+            <div>
+              <label for="budget" class="block text-silver font-semibold mb-2">Budget Range (Optional)</label>
+              <select 
+                id="budget" 
+                name="budget"
+                class="w-full p-3 rounded-lg bg-charcoal border border-accent border-opacity-30 text-white focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-20 transition-all"
+              >
+                <option value="">Prefer not to specify</option>
+                <option value="4000-5000">$4,000 - $5,000</option>
+                <option value="5000-6000">$5,000 - $6,000</option>
+                <option value="6000+">$6,000+</option>
+                <option value="stud-service">Stud Service Inquiry</option>
+              </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              class="w-full luxury-button text-lg py-4 font-playfair font-semibold"
+            >
+              Send Message
+            </button>
+
+            <p class="text-sm text-silver text-center">
+              * Required fields. We typically respond within 24 hours.
+            </p>
+          </form>
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="slide-right">
+        <div class="space-y-8">
+          
+          <!-- Direct Contact -->
+          <div class="bg-card-gradient p-8 rounded-lg border border-accent border-opacity-20">
+            <h3 class="text-2xl font-playfair font-bold text-accent mb-6">Get In Touch</h3>
+            
+            <div class="space-y-6">
+              <div class="flex items-center">
+                <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center mr-4">
+                  <span class="text-charcoal text-xl">📞</span>
+                </div>
+                <div>
+                  <p class="text-silver font-semibold">Phone</p>
+                  <a href={`tel:${contactInfo.phone}`} class="text-white text-lg hover:text-accent transition-colors">
+                    {contactInfo.phone}
+                  </a>
+                </div>
+              </div>
+
+              <div class="flex items-center">
+                <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center mr-4">
+                  <span class="text-charcoal text-xl">📧</span>
+                </div>
+                <div>
+                  <p class="text-silver font-semibold">Email</p>
+                  <a href={`mailto:${contactInfo.email}`} class="text-white text-lg hover:text-accent transition-colors">
+                    {contactInfo.email}
+                  </a>
+                </div>
+              </div>
+
+              <div class="flex items-center">
+                <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center mr-4">
+                  <span class="text-charcoal text-xl">📍</span>
+                </div>
+                <div>
+                  <p class="text-silver font-semibold">Location</p>
+                  <p class="text-white text-lg">{contactInfo.location}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hours -->
+          <div class="bg-card-gradient p-8 rounded-lg border border-accent border-opacity-20">
+            <h3 class="text-2xl font-playfair font-bold text-accent mb-6">Contact Hours</h3>
+            
+            <div class="space-y-4">
+              <div class="flex justify-between">
+                <span class="text-silver font-semibold">Monday - Friday</span>
+                <span class="text-white">{contactInfo.hours.weekdays}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-silver font-semibold">Saturday - Sunday</span>
+                <span class="text-white">{contactInfo.hours.weekends}</span>
+              </div>
+              <div class="border-t border-accent border-opacity-20 pt-4">
+                <div class="flex justify-between">
+                  <span class="text-silver font-semibold">Emergency Support</span>
+                  <span class="text-accent">{contactInfo.hours.emergency}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social & Additional -->
+          <div class="bg-card-gradient p-8 rounded-lg border border-accent border-opacity-20">
+            <h3 class="text-2xl font-playfair font-bold text-accent mb-6">Follow Our Journey</h3>
+            
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-silver">Instagram</span>
+                <a href="#" class="text-white hover:text-accent transition-colors">@maxlinebulldogs</a>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-silver">Facebook</span>
+                <a href="#" class="text-white hover:text-accent transition-colors">Maxline Bulldogs</a>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-silver">Partnership</span>
+                <span class="text-accent">HorrorBullz HQ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <section class="mb-16">
+      <div class="text-center mb-12 fade-in">
+        <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
+          Frequently Asked Questions
+        </h2>
+        <p class="text-xl text-silver max-w-2xl mx-auto">
+          Quick answers to common questions about our champion bulldogs and services.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-card-gradient p-6 rounded-lg border border-accent border-opacity-20">
+          <h3 class="text-xl font-playfair font-bold text-accent mb-3">What's included with my puppy?</h3>
+          <p class="text-silver">AKC registration, health certificate, vaccination records, microchip, starter pack, and lifetime breeder support.</p>
+        </div>
+        
+        <div class="bg-card-gradient p-6 rounded-lg border border-accent border-opacity-20">
+          <h3 class="text-xl font-playfair font-bold text-accent mb-3">How do reservations work?</h3>
+          <p class="text-silver">$500 deposit secures your puppy, with remaining balance due at pickup. We accept multiple payment methods.</p>
+        </div>
+        
+        <div class="bg-card-gradient p-6 rounded-lg border border-accent border-opacity-20">
+          <h3 class="text-xl font-playfair font-bold text-accent mb-3">What about health guarantees?</h3>
+          <p class="text-silver">2-year comprehensive health guarantee covering genetic conditions, plus lifetime breeder support for all families.</p>
+        </div>
+        
+        <div class="bg-card-gradient p-6 rounded-lg border border-accent border-opacity-20">
+          <h3 class="text-xl font-playfair font-bold text-accent mb-3">Can I visit the facility?</h3>
+          <p class="text-silver">Yes! We welcome scheduled visits to meet our champions and see our breeding environment. Contact us to arrange.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <div class="text-center fade-in">
+      <div class="bg-card-gradient p-12 rounded-lg border border-accent border-opacity-20">
+        <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
+          Ready to Join Our Legacy?
+        </h2>
+        <p class="text-xl text-silver mb-8 max-w-2xl mx-auto">
+          Whether you're seeking a legendary companion or professional breeding services, 
+          the Maxline Bulldogs family is here to welcome you.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/studs" class="luxury-button">
+            Meet Our Champions
+          </a>
+          <a href="/puppies" class="luxury-button">
+            View Available Puppies
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Final Banner -->
+  <div class="mt-16">
+    <Banner 
+      text="Contact Maxline Bulldogs today - Where every conversation begins a legendary journey."
+    />
+  </div>
+</Layout>
+
+<style>
+  /* Form Styling */
+  .luxury-form input,
+  .luxury-form textarea,
+  .luxury-form select {
+    background: rgba(26, 26, 26, 0.8);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .luxury-form input:focus,
+  .luxury-form textarea:focus,
+  .luxury-form select:focus {
+    outline: none;
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+    background: rgba(26, 26, 26, 0.9);
+  }
+
+  .luxury-form input::placeholder,
+  .luxury-form textarea::placeholder {
+    color: #9ca3af;
+  }
+
+  .luxury-form label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: #C0C0C0;
+  }
+
+  /* Enhanced animations */
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+  }
+
+  .slide-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: slideLeft 1s ease-out forwards;
+    animation-delay: 0.2s;
+  }
+
+  .slide-right {
+    opacity: 0;
+    transform: translateX(30px);
+    animation: slideRight 1s ease-out forwards;
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  @keyframes slideLeft {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideRight {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Contact card hover effects */
+  .bg-card-gradient:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(212, 175, 55, 0.15);
+    transition: all 0.3s ease;
+  }
+
+  /* Service cards */
+  .grid > div:hover {
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+  }
+
+  /* Form validation styling */
+  .luxury-form input:valid,
+  .luxury-form textarea:valid,
+  .luxury-form select:valid {
+    border-color: rgba(34, 197, 94, 0.5);
+  }
+
+  .luxury-form input:invalid:not(:placeholder-shown),
+  .luxury-form textarea:invalid:not(:placeholder-shown),
+  .luxury-form select:invalid:not(:placeholder-shown) {
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+
+  /* Button styling */
+  .luxury-button:hover {
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+    transform: translateY(-2px);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .slide-left,
+    .slide-right {
+      transform: translateY(30px);
+      animation: slideUp 1s ease-out forwards;
+    }
+    
+    .luxury-form {
+      padding: 1rem;
+    }
+    
+    .bg-card-gradient {
+      padding: 1.5rem;
+    }
+  }
+
+  /* Enhanced focus states for accessibility */
+  .luxury-form input:focus,
+  .luxury-form textarea:focus,
+  .luxury-form select:focus {
+    outline: 2px solid #D4AF37;
+    outline-offset: 2px;
+  }
+
+  /* Custom select arrow */
+  .luxury-form select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23D4AF37' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style> 

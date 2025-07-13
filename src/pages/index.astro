@@ -1,0 +1,256 @@
+---
+import Layout from '../layouts/Layout.astro';
+import VideoHero from '../components/VideoHero.astro';
+import InfoCard from '../components/InfoCard.astro';
+import Gallery from '../components/Gallery.astro';
+import Banner from '../components/Banner.astro';
+
+// Featured media for homepage
+const featuredImages = [
+  {
+    src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1747346710_3633330005343056233_69185781706.jpg',
+    alt: 'Premium AKC Mini English Bulldog from Maxline Bulldogs',
+    title: 'Champion Bloodlines',
+    category: 'Featured'
+  },
+  {
+    src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1744558229_3609938532074007372_69185781706.jpg',
+    alt: 'Luxurious Mini English Bulldog stud',
+    title: 'Premium Quality',
+    category: 'Featured'
+  },
+  {
+    src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1742677276_3594159954488811115_69185781706.jpg',
+    alt: 'Beautiful Mini English Bulldog puppy',
+    title: 'Available Now',
+    category: 'Featured'
+  }
+];
+---
+
+<Layout title="Maxline Bulldogs | Premium AKC Mini English Bulldogs" description="Where Legends Are Bred – Premium AKC Mini English Bulldogs from Champion Bloodlines in Partnership with HorrorBullz HQ. Health-cleared studs and luxury puppies from top breeder Mike.">
+	<!-- Hero Video Section -->
+	<VideoHero 
+		videoSrc="/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1746763619_3628438560613852773_69185781706.mp4"
+		title="Where Legends Are Bred"
+		subtitle="Premium AKC Mini English Bulldogs × HorrorBullz HQ"
+		overlay={true}
+		autoplay={true}
+		loop={true}
+		muted={true}
+		className="mb-0"
+	/>
+
+	<!-- Main Content Section -->
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+		<!-- Introduction -->
+		<div class="text-center mb-16 fade-in">
+			<h2 class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-6">
+				Cinematic Excellence in Every Bloodline
+			</h2>
+			<p class="text-xl text-silver max-w-3xl mx-auto leading-relaxed mb-8">
+				Experience the luxury of champion AKC Mini English Bulldogs, where each stud embodies the dramatic presence of legendary cinema icons. Our partnership with HorrorBullz HQ brings you bloodlines as captivating as the silver screen.
+			</p>
+			<div class="flex flex-wrap justify-center gap-4">
+				<a href="/studs" class="luxury-button" aria-label="Explore our champion studs">
+					Meet Our Stars
+				</a>
+				<a href="/puppies" class="luxury-button" aria-label="Reserve your premium puppy">
+					Reserve Your Legend
+				</a>
+			</div>
+		</div>
+
+		<!-- Featured Gallery -->
+		<section class="mb-16 slide-up">
+			<Gallery 
+				title="Featured Champions"
+				images={featuredImages}
+				columns={3}
+				className="mb-8"
+			/>
+		</section>
+
+		<!-- Info Cards Grid -->
+		<section class="responsive-grid mb-16 fade-in">
+			<InfoCard 
+				title="Our Champion Studs"
+				bio="Meet our cinematic lineup of champion AKC Mini English Bulldogs. Each stud named after legendary film icons: Joker, Nirvana, Hannibal, The Substance, The Sandman, and Harley Quinn."
+				traits={[
+					"AKC Champion Bloodlines", 
+					"Health Cleared & Certified", 
+					"Cinematic Presence", 
+					"Proven Genetics",
+					"Professional Breeding Standards",
+					"HorrorBullz HQ Partnership"
+				]}
+				buttonText="View Our Stars"
+				buttonAriaLabel="Explore our champion studs"
+			/>
+			
+			<InfoCard 
+				title="Premium Litters"
+				bio="Our first generation of legendary puppies is here! Beautiful mini English Bulldog puppies from our champion bloodlines, each destined for greatness in loving homes."
+				table={{
+					headers: ["Status", "Colors Available", "Ready"],
+					rows: [
+						["Available Now", "Chocolate, Lilac, Tri-color", "8-10 weeks"],
+						["Upcoming", "Merle, Cream, Brindle", "Spring 2024"],
+						["Reservations", "All Variations", "Open Now"]
+					]
+				}}
+				traits={[
+					"Health Guarantee", 
+					"AKC Registration", 
+					"Vaccinated & Socialized", 
+					"Luxury Breeding Environment",
+					"Lifetime Support",
+					"Champion Bloodlines"
+				]}
+				buttonText="View Puppies"
+				buttonAriaLabel="See our available puppies"
+			/>
+			
+			<InfoCard 
+				title="HorrorBullz Partnership"
+				bio="Our exclusive collaboration with HorrorBullz HQ brings together the finest in luxury bulldog breeding with cinematic inspiration. Each dog carries the legacy of legendary film characters."
+				traits={[
+					"Exclusive Partnership", 
+					"Cinematic Bloodlines", 
+					"Luxury Standards", 
+					"Premium Genetics",
+					"Professional Breeding",
+					"Legendary Legacy"
+				]}
+				buttonText="Learn More"
+				buttonAriaLabel="Learn about our partnership"
+			/>
+		</section>
+
+		<!-- Call to Action Banner -->
+		<Banner 
+			text="Ready to Welcome Your Legend? Join the exclusive circle of Maxline Bulldogs owners."
+		/>
+	</div>
+
+	<!-- Partnership Showcase -->
+	<section class="bg-obsidian py-16">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-12">
+				<h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-4">
+					Partnership with HorrorBullz HQ
+				</h2>
+				<p class="text-silver max-w-2xl mx-auto">
+					Discover the cinematic inspiration behind our champion bloodlines, where each stud embodies the dramatic presence of legendary film icons.
+				</p>
+			</div>
+			
+			<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+				<!-- Partnership showcase images -->
+				<div class="group relative overflow-hidden rounded-lg shadow-luxury hover:shadow-gold transition-all duration-300">
+					<img 
+						src="/maxlinebulldogs insta/horrorbullzhq/Joker.jpg" 
+						alt="Joker inspiration for chocolate and tan bulldogs"
+						class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+						loading="lazy"
+					/>
+					<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+					<div class="absolute bottom-4 left-4 text-white">
+						<h3 class="font-playfair font-semibold">Joker</h3>
+						<p class="text-sm text-accent">Chocolate & Tan</p>
+					</div>
+				</div>
+				
+				<div class="group relative overflow-hidden rounded-lg shadow-luxury hover:shadow-gold transition-all duration-300">
+					<img 
+						src="/maxlinebulldogs insta/horrorbullzhq/Hannibal Lecter.jpg" 
+						alt="Hannibal Lecter inspiration for dark brindle bulldogs"
+						class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+						loading="lazy"
+					/>
+					<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+					<div class="absolute bottom-4 left-4 text-white">
+						<h3 class="font-playfair font-semibold">Hannibal</h3>
+						<p class="text-sm text-accent">Dark Brindle</p>
+					</div>
+				</div>
+				
+				<div class="group relative overflow-hidden rounded-lg shadow-luxury hover:shadow-gold transition-all duration-300">
+					<img 
+						src="/maxlinebulldogs insta/horrorbullzhq/Substance.jpg" 
+						alt="The Substance inspiration for cream and white bulldogs"
+						class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+						loading="lazy"
+					/>
+					<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+					<div class="absolute bottom-4 left-4 text-white">
+						<h3 class="font-playfair font-semibold">The Substance</h3>
+						<p class="text-sm text-accent">Cream & White</p>
+					</div>
+				</div>
+				
+				<div class="group relative overflow-hidden rounded-lg shadow-luxury hover:shadow-gold transition-all duration-300">
+					<img 
+						src="/maxlinebulldogs insta/horrorbullzhq/American Psyqo.jpg" 
+						alt="American Psycho inspiration for luxury breeding standards"
+						class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+						loading="lazy"
+					/>
+					<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+					<div class="absolute bottom-4 left-4 text-white">
+						<h3 class="font-playfair font-semibold">Premium</h3>
+						<p class="text-sm text-accent">Luxury Standards</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	/* Enhanced animations for luxury feel */
+	.fade-in {
+		opacity: 0;
+		animation: fadeIn 1s ease-in-out forwards;
+	}
+	
+	.slide-up {
+		opacity: 0;
+		transform: translateY(30px);
+		animation: slideUp 1s ease-out forwards;
+		animation-delay: 0.3s;
+	}
+	
+	/* Stagger animations for info cards */
+	.responsive-grid > :nth-child(1) {
+		animation-delay: 0.1s;
+	}
+	
+	.responsive-grid > :nth-child(2) {
+		animation-delay: 0.2s;
+	}
+	
+	.responsive-grid > :nth-child(3) {
+		animation-delay: 0.3s;
+	}
+	
+	/* Partnership showcase hover effects */
+	.group:hover .absolute {
+		backdrop-filter: blur(2px);
+	}
+	
+	/* Luxury scroll indicator */
+	.scroll-indicator {
+		position: fixed;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 30;
+	}
+	
+	@media (max-width: 768px) {
+		.partnership-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+</style> 

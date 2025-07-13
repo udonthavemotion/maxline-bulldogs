@@ -1,0 +1,21 @@
+---
+const { text } = Astro.props;
+---
+
+<button class="bg-accent text-primary px-4 py-2 rounded" onclick="redirectToCheckout()">
+	{text}
+</button>
+
+<script is:inline>
+	// TODO: Integrate Stripe payments after demo deployment
+	async function redirectToCheckout() {
+		try {
+			// Placeholder for Stripe integration
+			console.log('Stripe integration coming soon');
+			alert('Payment integration coming soon. Please contact us directly for now.');
+		} catch (error) {
+			console.error('Payment error:', error);
+			alert('Sorry, there was an issue with payment. Please try again.');
+		}
+	}
+</script> 

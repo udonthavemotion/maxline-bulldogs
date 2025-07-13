@@ -1,0 +1,75 @@
+---
+interface Props {
+  title: string;
+  sliderTexts?: string[];
+}
+
+const { title, sliderTexts = [] } = Astro.props;
+---
+
+<section class="py-8 hero-section">
+  <h1 class="text-5xl md:text-6xl font-playfair font-bold text-silver-300 mb-6 text-center leading-tight">{title}</h1>
+  {sliderTexts.length > 0 && (
+    <div class="relative overflow-hidden mb-8 h-12 hero-slider">
+      <div class="absolute inset-0 flex animate-fade">
+        {sliderTexts.map((text) => (
+          <span class="flex-shrink-0 w-full text-center text-silver-200 text-2xl font-inter transition-opacity duration-500 hover:opacity-80">{text}</span>
+        ))}
+      </div>
+    </div>
+  )}
+</section>
+
+<style>
+  .font-playfair {
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .text-silver-200 {
+    color: #e5e7eb;
+  }
+  
+  .text-silver-300 {
+    color: #d1d5db;
+  }
+  
+  .hero-section {
+    animation: fadeIn 1s ease-in;
+  }
+  
+  .animate-fade {
+    animation: fade 15s infinite;
+  }
+  
+  @keyframes fade {
+    0%, 33% { transform: translateX(0); }
+    33.1%, 66% { transform: translateX(-100%); }
+    66.1%, 100% { transform: translateX(-200%); }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .hero-section h1 {
+      font-size: 2.5rem;
+      line-height: 1.2;
+    }
+    
+    .hero-slider span {
+      font-size: 1.25rem;
+    }
+  }
+</style> 

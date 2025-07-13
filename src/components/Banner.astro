@@ -1,0 +1,402 @@
+---
+export interface Props {
+  text?: string;
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  buttonText2?: string;
+  buttonLink2?: string;
+  className?: string;
+  variant?: 'default' | 'hero' | 'cta' | 'minimal';
+  backgroundImage?: string;
+  overlay?: boolean;
+}
+
+const { 
+  text, 
+  title, 
+  subtitle, 
+  buttonText, 
+  buttonLink, 
+  buttonText2, 
+  buttonLink2,
+  className = '',
+  variant = 'default',
+  backgroundImage,
+  overlay = true
+} = Astro.props;
+
+// Variant-specific styling
+const variantStyles = {
+  default: 'py-12 bg-card-gradient',
+  hero: 'py-20 bg-luxury-gradient',
+  cta: 'py-16 bg-gradient-to-r from-primary to-accent',
+  minimal: 'py-8 bg-obsidian'
+};
+
+const variantClass = variantStyles[variant] || variantStyles.default;
+---
+
+<div class={`banner-section ${variantClass} ${className}`}>
+  <!-- Background Image (if provided) -->
+  {backgroundImage && (
+    <div class="absolute inset-0 overflow-hidden">
+      <img 
+        src={backgroundImage} 
+        alt="" 
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+      {overlay && (
+        <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+      )}
+    </div>
+  )}
+  
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      
+      <!-- Title Version (for modern banners) -->
+      {title && (
+        <div class="banner-content">
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-accent mb-6">
+            {title}
+          </h2>
+          
+          {subtitle && (
+            <p class="text-lg md:text-xl text-silver mb-8 max-w-3xl mx-auto leading-relaxed">
+              {subtitle}
+            </p>
+          )}
+          
+          {(buttonText || buttonText2) && (
+            <div class="banner-buttons flex flex-wrap justify-center gap-4">
+              {buttonText && (
+                <a 
+                  href={buttonLink || '#'} 
+                  class="luxury-button inline-block"
+                  aria-label={buttonText}
+                >
+                  {buttonText}
+                </a>
+              )}
+              
+              {buttonText2 && (
+                <a 
+                  href={buttonLink2 || '#'} 
+                  class="luxury-button-secondary inline-block"
+                  aria-label={buttonText2}
+                >
+                  {buttonText2}
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+      
+      <!-- Legacy Text Version (for backward compatibility) -->
+      {!title && text && (
+        <div class="banner-content-legacy">
+          <p class="text-lg md:text-xl lg:text-2xl text-silver font-inter leading-relaxed max-w-4xl mx-auto">
+            {text}
+          </p>
+        </div>
+      )}
+      
+    </div>
+  </div>
+  
+  <!-- Decorative Elements -->
+  <div class="banner-decorations">
+    <div class="absolute top-0 left-0 w-20 h-20 bg-accent bg-opacity-10 rounded-full blur-xl"></div>
+    <div class="absolute bottom-0 right-0 w-32 h-32 bg-primary bg-opacity-10 rounded-full blur-xl"></div>
+  </div>
+</div>
+
+<style>
+  .banner-section {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+  }
+  
+  .banner-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #4169E1, #D4AF37, #4169E1);
+    opacity: 0.8;
+  }
+  
+  .banner-content {
+    animation: bannerFadeIn 1s ease-out forwards;
+    opacity: 0;
+  }
+  
+  .banner-content-legacy {
+    animation: bannerFadeIn 1s ease-out forwards;
+    opacity: 0;
+    animation-delay: 0.2s;
+  }
+  
+  @keyframes bannerFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Title styling */
+  .banner-content h2 {
+    background: linear-gradient(135deg, #D4AF37, #4169E1);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: titleGlow 3s ease-in-out infinite alternate;
+  }
+  
+  @keyframes titleGlow {
+    from {
+      filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
+    }
+    to {
+      filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5));
+    }
+  }
+  
+  /* Button styling */
+  .luxury-button {
+    background: linear-gradient(135deg, #D4AF37, #4169E1);
+    color: white;
+    padding: 0.875rem 2rem;
+    border-radius: 8px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .luxury-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  .luxury-button:hover::before {
+    left: 100%;
+  }
+  
+  .luxury-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+  }
+  
+  .luxury-button-secondary {
+    background: transparent;
+    color: #D4AF37;
+    padding: 0.875rem 2rem;
+    border: 2px solid #D4AF37;
+    border-radius: 8px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .luxury-button-secondary:hover {
+    background: #D4AF37;
+    color: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+  }
+  
+  /* Variant-specific styling */
+  .banner-section.hero {
+    background: linear-gradient(135deg, #4169E1 0%, #8B4513 100%);
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .banner-section.cta {
+    background: linear-gradient(45deg, #4169E1, #D4AF37);
+    transform: skewY(-1deg);
+    margin: 2rem 0;
+  }
+  
+  .banner-section.cta > div {
+    transform: skewY(1deg);
+  }
+  
+  .banner-section.minimal {
+    background: rgba(15, 15, 15, 0.8);
+    border: none;
+    box-shadow: none;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .banner-content h2 {
+      font-size: 2rem;
+      line-height: 1.2;
+    }
+    
+    .banner-content p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .banner-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .luxury-button,
+    .luxury-button-secondary {
+      width: 100%;
+      max-width: 280px;
+      text-align: center;
+      padding: 1rem 1.5rem;
+    }
+    
+    .banner-section {
+      margin: 1rem;
+      border-radius: 8px;
+    }
+  }
+  
+  /* Interactive hover effects */
+  .banner-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+  }
+  
+  .banner-section:hover::before {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  }
+  
+  /* Accessibility improvements */
+  .luxury-button:focus,
+  .luxury-button-secondary:focus {
+    outline: 2px solid #D4AF37;
+    outline-offset: 2px;
+  }
+  
+  /* Legacy text styling */
+  .banner-content-legacy p {
+    font-style: italic;
+    position: relative;
+  }
+  
+  .banner-content-legacy p::before,
+  .banner-content-legacy p::after {
+    content: '"';
+    font-size: 2rem;
+    color: #D4AF37;
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .banner-content-legacy p::before {
+    margin-right: 0.5rem;
+  }
+  
+  .banner-content-legacy p::after {
+    margin-left: 0.5rem;
+  }
+  
+  /* Decorative elements */
+  .banner-decorations {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+  .banner-decorations div {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .banner-decorations div:nth-child(2) {
+    animation-delay: 3s;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  /* Print styles */
+  @media print {
+    .banner-section {
+      break-inside: avoid;
+      box-shadow: none;
+      border: 1px solid #ccc;
+      background: white !important;
+      color: black !important;
+    }
+    
+    .banner-content h2,
+    .banner-content-legacy p {
+      color: black !important;
+      -webkit-text-fill-color: black !important;
+    }
+    
+    .luxury-button,
+    .luxury-button-secondary {
+      background: white !important;
+      color: black !important;
+      border: 1px solid black !important;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .banner-section {
+      border: 2px solid currentColor;
+    }
+    
+    .banner-content h2 {
+      -webkit-text-fill-color: currentColor;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .banner-content,
+    .banner-content-legacy,
+    .banner-section,
+    .luxury-button,
+    .luxury-button-secondary {
+      animation: none;
+      transition: none;
+    }
+    
+    .banner-decorations div {
+      animation: none;
+    }
+  }
+</style> 
