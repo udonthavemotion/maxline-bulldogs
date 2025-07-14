@@ -265,4 +265,13 @@ export type TinaCollection = {
   ui?: any;
 };
 
+// Export queries function for compatibility
+export const queries = () => ({
+  studs: () => ({}),
+  litters: () => ({}),
+  photos: () => ({}),
+  pages: () => ({}),
+  settings: () => ({})
+});
+
   

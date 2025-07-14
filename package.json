@@ -31,5 +31,8 @@
     "tailwindcss": "^3.4.13",
     "tinacms": "^2.8.0",
     "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.13"
   }
 }
