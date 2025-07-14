@@ -7,14 +7,29 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "tina:dev": "tinacms dev -c \"npm run dev\"",
+    "tina:build": "tinacms build",
+    "tina:admin": "tinacms admin",
+    "tina:init": "tinacms init"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^3.1.7",
+    "@astrojs/node": "^8.3.4",
     "@astrojs/tailwind": "^5.1.1",
     "@stripe/stripe-js": "^7.4.0",
+    "@tinacms/auth": "^1.1.0",
+    "@tinacms/cli": "^1.10.0",
+    "@tinacms/datalayer": "^1.4.0",
+    "@tinacms/graphql": "^1.6.0",
+    "@tinacms/mdx": "^1.8.0",
+    "@tinacms/search": "^1.1.0",
     "astro": "^4.15.6",
+    "graphql": "^16.11.0",
+    "graphql-request": "^7.2.0",
     "tailwindcss": "^3.4.13",
+    "tinacms": "^2.8.0",
     "typescript": "^5.8.3"
   }
 }

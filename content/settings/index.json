@@ -1,0 +1,42 @@
+{
+  "site": {
+    "title": "Maxline Bulldogs",
+    "description": "Where Legends Are Bred – Premium AKC Mini English Bulldogs from Champion Bloodlines in Partnership with HorrorBullz HQ",
+    "url": "https://maxlinebulldogs.com",
+    "logo": "/images/branding/logo.jpg"
+  },
+  "contact": {
+    "phone": "(555) 123-4567",
+    "email": "info@maxlinebulldogs.com",
+    "address": "123 Bulldog Lane, Breeder City, ST 12345",
+    "social": {
+      "instagram": "https://instagram.com/maxlinebulldogs",
+      "facebook": "https://facebook.com/maxlinebulldogs",
+      "youtube": "https://youtube.com/@maxlinebulldogs"
+    }
+  },
+  "horrorbullz": {
+    "title": "Partnership with HorrorBullz HQ",
+    "description": "Our exclusive collaboration with HorrorBullz HQ brings together the finest in luxury bulldog breeding with cinematic inspiration. Each dog carries the legacy of legendary film characters.",
+    "characters": [
+      {
+        "name": "Joker",
+        "description": "Inspired by the iconic villain, this line represents bold chocolate and tan coloring with a mischievous spirit.",
+        "image": "/images/horrorbullz/joker.jpg",
+        "relatedColor": "Chocolate & Tan"
+      },
+      {
+        "name": "Hannibal Lecter",
+        "description": "Sophisticated and intelligent, this line features dark brindle patterns with aristocratic presence.",
+        "image": "/images/horrorbullz/hannibal.jpg",
+        "relatedColor": "Dark Brindle"
+      },
+      {
+        "name": "The Substance",
+        "description": "Pure and elegant, representing the finest cream and white bulldogs with pristine genetics.",
+        "image": "/images/horrorbullz/substance.jpg",
+        "relatedColor": "Cream & White"
+      }
+    ]
+  }
+} 

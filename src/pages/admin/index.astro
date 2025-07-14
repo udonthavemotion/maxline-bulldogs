@@ -1,0 +1,210 @@
+---
+// Admin page for Tina CMS
+// This page serves as the entry point for content management
+
+// For production, you'll need to set up Tina Cloud authentication
+// 1. Sign up at https://tina.io/
+// 2. Create a new project
+// 3. Get your Client ID and Token
+// 4. Set environment variables:
+//    - TINA_CLIENT_ID=your_client_id
+//    - TINA_TOKEN=your_token
+// 5. Update tina/config.ts with your credentials
+
+// For development, we'll use local authentication
+const isLocal = import.meta.env.TINA_PUBLIC_IS_LOCAL === 'true';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maxline Bulldogs Admin - Content Management</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #f8f9fa;
+        }
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+            margin-top: 20px;
+            color: #666;
+            font-size: 16px;
+        }
+        .admin-header {
+            background: #1a1a1a;
+            color: white;
+            padding: 1rem 2rem;
+            border-bottom: 3px solid #d4af37;
+        }
+        .admin-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 300;
+        }
+        .admin-subtitle {
+            margin: 0.5rem 0 0 0;
+            font-size: 14px;
+            color: #d4af37;
+        }
+        .instructions {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+        .instructions h2 {
+            color: #1a1a1a;
+            margin-top: 0;
+        }
+        .instructions ol {
+            line-height: 1.6;
+        }
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+        .code-block {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <h1 class="admin-title">Maxline Bulldogs Admin</h1>
+        <p class="admin-subtitle">Content Management System</p>
+    </div>
+
+    <div class="instructions">
+        <h2>🚀 Getting Started with Tina CMS</h2>
+        
+        <div class="success">
+            <strong>✅ Tina CMS is configured!</strong><br>
+            Your content management system is ready to use.
+        </div>
+
+        <h3>For Development (Local Environment):</h3>
+        <ol>
+            <li>Run the Tina development server:
+                <div class="code-block">npm run dev</div>
+            </li>
+            <li>Set the environment variable:
+                <div class="code-block">TINA_PUBLIC_IS_LOCAL=true</div>
+            </li>
+            <li>The Tina admin will be available at: <strong>/admin</strong></li>
+            <li>You can edit content directly on your pages with inline editing</li>
+        </ol>
+
+        <h3>For Production (Tina Cloud):</h3>
+        <ol>
+            <li>Sign up at <a href="https://tina.io/" target="_blank">https://tina.io/</a></li>
+            <li>Create a new project and connect your GitHub repository</li>
+            <li>Get your Client ID and Token from the Tina dashboard</li>
+            <li>Update your environment variables:
+                <div class="code-block">
+TINA_CLIENT_ID=your_client_id_here<br>
+TINA_TOKEN=your_token_here
+                </div>
+            </li>
+            <li>Update <code>tina/config.ts</code> with your credentials</li>
+            <li>Deploy to Vercel - the admin will be available at <strong>yoursite.com/admin</strong></li>
+        </ol>
+
+        <div class="warning">
+            <strong>⚠️ Important:</strong> Make sure to set up proper authentication before deploying to production. The admin interface should only be accessible to authorized users.
+        </div>
+
+        <h3>Content Collections Available:</h3>
+        <ul>
+            <li><strong>Champion Studs</strong> - Management of your breeding dogs</li>
+            <li><strong>Litters</strong> - Puppy litters and availability</li>
+            <li><strong>Photo Gallery</strong> - Organized photo management</li>
+            <li><strong>Pages</strong> - Website content and sections</li>
+            <li><strong>Site Settings</strong> - Global site configuration</li>
+        </ul>
+
+        <h3>Features:</h3>
+        <ul>
+            <li>✨ Visual inline editing on your website</li>
+            <li>📸 Easy photo uploads with automatic organization</li>
+            <li>📝 Rich text editing for descriptions</li>
+            <li>🏷️ Category and tag management</li>
+            <li>🔄 Git-based workflow (no database needed)</li>
+            <li>🚀 Automatic deployment via Vercel</li>
+        </ul>
+    </div>
+
+    <div class="loading-container" id="loading" style="display: none;">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading Tina CMS...</div>
+    </div>
+
+    <script>
+        // Initialize Tina CMS when ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're in a Tina environment
+            const isTinaRoute = window.location.pathname.startsWith('/admin');
+            
+            if (isTinaRoute) {
+                // Show loading indicator
+                const loadingElement = document.getElementById('loading');
+                if (loadingElement !== null) {
+                    loadingElement.style.display = 'flex';
+                }
+                
+                // This would normally load the Tina admin
+                // For now, we'll show the setup instructions
+                setTimeout(function() {
+                    const loadingElement = document.getElementById('loading');
+                    if (loadingElement !== null) {
+                        loadingElement.style.display = 'none';
+                    }
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html> 

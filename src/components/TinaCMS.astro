@@ -1,0 +1,167 @@
+---
+// TinaCMS Provider Component
+// This component initializes Tina CMS for visual editing
+// It should be included in the main layout or specific pages where editing is needed
+
+interface Props {
+  enableEditing?: boolean;
+  children?: any;
+}
+
+const { enableEditing = false } = Astro.props;
+
+// Check if we're in development mode or have Tina credentials
+const isDev = import.meta.env.DEV;
+const isLocal = import.meta.env.TINA_PUBLIC_IS_LOCAL === 'true';
+const hasCredentials = import.meta.env.TINA_CLIENT_ID && import.meta.env.TINA_TOKEN;
+
+const shouldEnableTina = enableEditing && (isDev || isLocal || hasCredentials);
+---
+
+{shouldEnableTina && (
+  <script>
+    // Tina CMS will be initialized via the admin interface
+    // This component provides styling and helpers for visual editing
+    console.log('Tina CMS editing enabled');
+    
+    // Add custom styling for Tina interface
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Tina CMS Custom Styles */
+      .tina-sidebar {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      }
+      
+      .tina-toolbar {
+        background: #1a1a1a !important;
+        border-bottom: 2px solid #d4af37 !important;
+      }
+      
+      .tina-toolbar button {
+        color: #d4af37 !important;
+      }
+      
+      .tina-sidebar-header {
+        background: #1a1a1a !important;
+        color: #d4af37 !important;
+      }
+      
+      /* Custom edit button styling */
+      .tina-edit-button {
+        background: #d4af37 !important;
+        color: #1a1a1a !important;
+        border: none !important;
+        padding: 8px 16px !important;
+        border-radius: 4px !important;
+        font-weight: 500 !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+      }
+      
+      .tina-edit-button:hover {
+        background: #b8941f !important;
+        transform: translateY(-1px) !important;
+      }
+      
+      /* Make editing indicators more visible */
+      .tina-editing-indicator {
+        border: 2px dashed #d4af37 !important;
+        background: rgba(212, 175, 55, 0.1) !important;
+        border-radius: 4px !important;
+        padding: 4px !important;
+        margin: 2px !important;
+      }
+      
+      .tina-editing-indicator:hover {
+        background: rgba(212, 175, 55, 0.2) !important;
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+)}
+
+<!-- Development helper -->
+{!shouldEnableTina && isDev && (
+  <div style="position: fixed; top: 10px; right: 10px; background: #f0f0f0; padding: 10px; border-radius: 4px; font-size: 12px; z-index: 9999;">
+    <strong>Tina CMS:</strong> Disabled<br>
+    <small>Set TINA_PUBLIC_IS_LOCAL=true for local editing</small>
+  </div>
+)}
+
+<!-- Tina CMS styles -->
+<style>
+  /* Global Tina styles */
+  :global(.tina-editing) {
+    position: relative;
+  }
+  
+  :global(.tina-editing::before) {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px dashed #d4af37;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  :global(.tina-editing:hover::before) {
+    background: rgba(212, 175, 55, 0.1);
+  }
+  
+  /* Edit button styles */
+  :global(.tina-edit-link) {
+    display: inline-block;
+    background: #d4af37;
+    color: #1a1a1a;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 4px;
+    transition: all 0.2s ease;
+  }
+  
+  :global(.tina-edit-link:hover) {
+    background: #b8941f;
+    transform: translateY(-1px);
+  }
+  
+  /* Content editing helpers */
+  :global(.tina-content-editable) {
+    min-height: 20px;
+    padding: 4px;
+    border-radius: 2px;
+    transition: background 0.2s ease;
+  }
+  
+  :global(.tina-content-editable:hover) {
+    background: rgba(212, 175, 55, 0.05);
+  }
+  
+  /* Media editing */
+  :global(.tina-media-editable) {
+    position: relative;
+    display: inline-block;
+  }
+  
+  :global(.tina-media-editable:hover::after) {
+    content: '📝 Edit Image';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(212, 175, 55, 0.9);
+    color: #1a1a1a;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+</style>
+
+<slot /> 

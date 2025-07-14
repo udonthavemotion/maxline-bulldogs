@@ -1,10 +1,13 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
+import mdx from '@astrojs/mdx';
+import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     tailwind(),
+    mdx(),
   ],
   // Enable static site generation for performance
   output: 'static',
@@ -15,4 +18,10 @@ export default defineConfig({
   // Site configuration for deployment
   site: 'https://maxlinebulldogs.com',
   base: '/',
+  // Add Tina CMS support
+  vite: {
+    define: {
+      'process.env.TINA_PUBLIC_IS_LOCAL': JSON.stringify(process.env.TINA_PUBLIC_IS_LOCAL || 'false'),
+    },
+  },
 }); 

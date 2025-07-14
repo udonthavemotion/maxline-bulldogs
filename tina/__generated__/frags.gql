@@ -1,0 +1,129 @@
+fragment StudsParts on Studs {
+  __typename
+  title
+  subtitle
+  description
+  heroImage
+  gallery {
+    __typename
+    image
+    alt
+    caption
+  }
+  traits {
+    __typename
+    trait
+  }
+  breeding {
+    __typename
+    bloodline
+    registration
+    healthClearances
+    available
+    studFee
+  }
+  inspiration
+  category
+  order
+  featured
+}
+
+fragment LittersParts on Litters {
+  __typename
+  title
+  birthDate
+  readyDate
+  sire
+  dam
+  description
+  puppies {
+    __typename
+    name
+    gender
+    color
+    price
+    status
+    image
+    notes
+  }
+  gallery {
+    __typename
+    image
+    alt
+    caption
+  }
+  status
+  featured
+}
+
+fragment PhotosParts on Photos {
+  __typename
+  title
+  image
+  alt
+  caption
+  category
+  relatedTo
+  dateTaken
+  featured
+  tags {
+    __typename
+    tag
+  }
+}
+
+fragment PagesParts on Pages {
+  __typename
+  title
+  description
+  hero {
+    __typename
+    title
+    subtitle
+    backgroundImage
+    videoSrc
+  }
+  content
+  sections {
+    __typename
+    type
+    title
+    content
+    data
+  }
+}
+
+fragment SettingsParts on Settings {
+  __typename
+  site {
+    __typename
+    title
+    description
+    url
+    logo
+  }
+  contact {
+    __typename
+    phone
+    email
+    address
+    social {
+      __typename
+      instagram
+      facebook
+      youtube
+    }
+  }
+  horrorbullz {
+    __typename
+    title
+    description
+    characters {
+      __typename
+      name
+      description
+      image
+      relatedColor
+    }
+  }
+}

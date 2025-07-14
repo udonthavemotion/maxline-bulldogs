@@ -1,5 +1,6 @@
 ---
 import SEOHead from '../components/SEOHead.astro';
+import TinaCMS from '../components/TinaCMS.astro';
 
 export interface Props {
   title: string;
@@ -9,9 +10,10 @@ export interface Props {
   type?: 'website' | 'article' | 'product';
   price?: string;
   category?: string;
+  enableTina?: boolean;
 }
 
-const { title, description, keywords, image, type, price, category } = Astro.props;
+const { title, description, keywords, image, type, price, category, enableTina = false } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -83,7 +85,9 @@ const { title, description, keywords, image, type, price, category } = Astro.pro
 
     <!-- Main Content -->
     <main class="pt-16 min-h-screen">
-      <slot />
+      <TinaCMS enableEditing={enableTina}>
+        <slot />
+      </TinaCMS>
     </main>
 
     <!-- Footer -->
