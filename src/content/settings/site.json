@@ -1,0 +1,48 @@
+{
+  "site": {
+    "title": "Maxline Bulldogs",
+    "description": "Where Legends Are Bred – Premium AKC Mini English Bulldogs from Champion Bloodlines in Partnership with HorrorBullz HQ",
+    "url": "https://maxlinebulldogs.com",
+    "logo": "/images/branding/logo.jpg"
+  },
+  "contact": {
+    "phone": "(555) 123-4567",
+    "email": "info@maxlinebulldogs.com",
+    "address": "Premium Breeding Facility, California",
+    "social": {
+      "instagram": "https://instagram.com/maxlinebulldogs",
+      "facebook": "https://facebook.com/maxlinebulldogs",
+      "youtube": "https://youtube.com/@maxlinebulldogs"
+    }
+  },
+  "horrorbullz": {
+    "title": "HorrorBullz HQ Partnership",
+    "description": "Our exclusive collaboration with HorrorBullz HQ brings together the finest in luxury bulldog breeding with cinematic inspiration. Each dog carries the legacy of legendary film characters.",
+    "characters": [
+      {
+        "name": "Joker",
+        "description": "The charismatic unpredictability of the legendary villain, embodied in chocolate and tan coloring.",
+        "image": "/images/studs/Joker.jpg",
+        "relatedColor": "Chocolate & Tan"
+      },
+      {
+        "name": "Hannibal Lecter",
+        "description": "Sophisticated darkness and commanding presence in dark brindle coloring.",
+        "image": "/images/studs/Hannibal Lecter.jpg",
+        "relatedColor": "Dark Brindle"
+      },
+      {
+        "name": "The Substance",
+        "description": "Pure elegance and ethereal beauty in cream and white coloring.",
+        "image": "/images/studs/Substance.jpg",
+        "relatedColor": "Cream & White"
+      },
+      {
+        "name": "American Psycho",
+        "description": "Luxury breeding standards and premium genetics.",
+        "image": "/images/studs/American Psyqo.jpg",
+        "relatedColor": "Premium Standards"
+      }
+    ]
+  }
+} 

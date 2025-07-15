@@ -4,253 +4,277 @@ import VideoHero from '../components/VideoHero.astro';
 import InfoCard from '../components/InfoCard.astro';
 import Gallery from '../components/Gallery.astro';
 import Banner from '../components/Banner.astro';
+import { getCollection } from 'astro:content';
 
-// Featured media for homepage
-const featuredImages = [
+// Get content from collections
+const allPhotos = await getCollection('photos');
+const allStuds = await getCollection('studs');
+const allLitters = await getCollection('litters');
+
+// Transform studs for display
+const studs = allStuds.map(stud => ({
+  title: stud.data.title,
+  description: stud.data.description,
+  features: stud.data.features,
+  image: stud.data.image,
+  slug: stud.slug
+}));
+
+// Transform litters for display  
+const litters = allLitters.map(litter => ({
+  title: litter.data.title,
+  status: litter.data.status,
+  colors: litter.data.colors,
+  ready: litter.data.ready,
+  images: litter.data.images,
+  slug: litter.slug
+}));
+
+// Transform photos for Gallery component
+const featuredImages = allPhotos.length > 0 ? allPhotos.slice(0, 6).map(photo => ({
+  src: photo.data.image,
+  alt: photo.data.alt,
+  title: photo.data.title,
+  category: photo.data.category
+})) : [
+  // Fallback images if no photos exist
   {
-    src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1747346710_3633330005343056233_69185781706.jpg',
+    src: '/images/studs/maxlinebulldogs_1747346710_3633330005343056233_69185781706.jpg',
     alt: 'Premium AKC Mini English Bulldog from Maxline Bulldogs',
     title: 'Champion Bloodlines',
     category: 'Featured'
   },
   {
-    src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1744558229_3609938532074007372_69185781706.jpg',
+    src: '/images/studs/maxlinebulldogs_1744558229_3609938532074007372_69185781706.jpg',
     alt: 'Luxurious Mini English Bulldog stud',
     title: 'Premium Quality',
     category: 'Featured'
   },
   {
-    src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1742677276_3594159954488811115_69185781706.jpg',
+    src: '/images/studs/maxlinebulldogs_1742677276_3594159954488811115_69185781706.jpg',
     alt: 'Beautiful Mini English Bulldog puppy',
     title: 'Available Now',
     category: 'Featured'
   }
 ];
+
+// Get available litters for info display
+const availableLitters = litters.filter(litter => litter.status.toLowerCase().includes('available'));
 ---
 
-<Layout title="Maxline Bulldogs | Premium AKC Mini English Bulldogs" description="Where Legends Are Bred – Premium AKC Mini English Bulldogs from Champion Bloodlines in Partnership with HorrorBullz HQ. Health-cleared studs and luxury puppies from top breeder Mike.">
-	<!-- Hero Video Section -->
-	<VideoHero 
-		videoSrc="/videos/maxlinebulldogs_1746763619_3628438560613852773_69185781706.mp4"
-		title="Where Legends Are Bred"
-		subtitle="Premium AKC Mini English Bulldogs × HorrorBullz HQ"
-		overlay={true}
-		autoplay={true}
-		loop={true}
-		muted={true}
-		className="mb-0"
-	/>
+<Layout 
+  title="Maxline Bulldogs - Premium AKC Mini English Bulldogs"
+  description="Where champion bloodlines meet cinematic inspiration. Our exclusive breeding program produces exceptional Mini English Bulldogs with unmatched quality and character."
+>
+  <main class="overflow-hidden">
+    <!-- Hero Section with Video -->
+    <VideoHero 
+      videoSrc="/videos/maxlinebulldogs_1746763619_3628438560613852773_69185781706.mp4"
+      title="Maxline Bulldogs"
+      subtitle="Premium AKC Mini English Bulldogs"
+      overlay={true}
+      autoplay={true}
+      loop={true}
+      muted={true}
+      className="luxury-hero"
+    />
 
-	<!-- Main Content Section -->
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-		<!-- Introduction -->
-		<div class="text-center mb-16 fade-in">
-			<h2 class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-6">
-				Cinematic Excellence in Every Bloodline
-			</h2>
-			<p class="text-xl text-silver max-w-3xl mx-auto leading-relaxed mb-8">
-				Experience the luxury of champion AKC Mini English Bulldogs, where each stud embodies the dramatic presence of legendary cinema icons. Our partnership with HorrorBullz HQ brings you bloodlines as captivating as the silver screen.
-			</p>
-			<div class="flex flex-wrap justify-center gap-4">
-				<a href="/studs" class="luxury-button" aria-label="Explore our champion studs">
-					Meet Our Stars
-				</a>
-				<a href="/puppies" class="luxury-button" aria-label="Reserve your premium puppy">
-					Reserve Your Legend
-				</a>
-			</div>
-		</div>
+    <!-- Featured Studs Section -->
+    <section class="py-16 bg-primary">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-playfair text-accent mb-4">Champion Studs</h2>
+          <p class="text-xl text-white max-w-3xl mx-auto">
+            Meet our exceptional breeding studs, each with championship bloodlines and distinctive personalities.
+          </p>
+          <!-- Edit in Admin comment for dev -->
+          <!-- Edit these stud profiles via /admin -->
+        </div>
 
-		<!-- Featured Gallery -->
-		<section class="mb-16 slide-up">
-			<Gallery 
-				title="Featured Champions"
-				images={featuredImages}
-				columns={3}
-				className="mb-8"
-			/>
-		</section>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {studs.slice(0, 3).map((stud) => (
+            <div class="relative overflow-hidden rounded-xl shadow-2xl aspect-square md:aspect-[4/3] hover:shadow-purple-500/50 transition-shadow group">
+              <img 
+                src={stud.image || '/images/studs/joker1.jpg'} 
+                alt={stud.title} 
+                class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
+                <h3 class="text-xl font-bold mb-2">{stud.title}</h3>
+                <p class="text-sm mb-3 text-gray-200">{stud.description}</p>
+                <ul class="text-sm space-y-1">
+                  {stud.features.slice(0, 3).map((feature: string) => (
+                    <li class="flex items-center">
+                      <span class="text-accent mr-2">•</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+          
+          {/* Add more placeholders if fewer than 3 studs */}
+          {studs.length < 3 && Array.from({ length: 3 - studs.length }, (_, i) => (
+            <div class="relative overflow-hidden rounded-xl shadow-2xl aspect-square md:aspect-[4/3] bg-gradient-to-br from-secondary to-charcoal border-2 border-dashed border-accent/30 hover:border-accent/50 transition-all duration-300 group">
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                <div class="text-6xl mb-4 text-accent/50">🐕</div>
+                <h3 class="text-xl font-bold text-accent mb-2">Add More Studs</h3>
+                <p class="text-sm text-gray-400 mb-4">Click below to add more breeding studs via the admin panel</p>
+                <a href="/admin" class="inline-block px-4 py-2 bg-accent text-primary rounded-lg hover:bg-yellow-600 transition-colors text-sm font-semibold">
+                  Add Stud
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
 
-		<!-- Info Cards Grid -->
-		<section class="responsive-grid mb-16 fade-in">
-			<InfoCard 
-				title="Our Champion Studs"
-				bio="Meet our cinematic lineup of champion AKC Mini English Bulldogs. Each stud named after legendary film icons: Joker, Nirvana, Hannibal, The Substance, The Sandman, and Harley Quinn."
-				traits={[
-					"AKC Champion Bloodlines", 
-					"Health Cleared & Certified", 
-					"Cinematic Presence", 
-					"Proven Genetics",
-					"Professional Breeding Standards",
-					"HorrorBullz HQ Partnership"
-				]}
-				buttonText="View Our Stars"
-				buttonAriaLabel="Explore our champion studs"
-			/>
-			
-			<InfoCard 
-				title="Premium Litters"
-				bio="Our first generation of legendary puppies is here! Beautiful mini English Bulldog puppies from our champion bloodlines, each destined for greatness in loving homes."
-				table={{
-					headers: ["Status", "Colors Available", "Ready"],
-					rows: [
-						["Available Now", "Chocolate, Lilac, Tri-color", "8-10 weeks"],
-						["Upcoming", "Merle, Cream, Brindle", "Spring 2024"],
-						["Reservations", "All Variations", "Open Now"]
-					]
-				}}
-				traits={[
-					"Health Guarantee", 
-					"AKC Registration", 
-					"Vaccinated & Socialized", 
-					"Luxury Breeding Environment",
-					"Lifetime Support",
-					"Champion Bloodlines"
-				]}
-				buttonText="View Puppies"
-				buttonAriaLabel="See our available puppies"
-			/>
-			
-			<InfoCard 
-				title="HorrorBullz Partnership"
-				bio="Our exclusive collaboration with HorrorBullz HQ brings together the finest in luxury bulldog breeding with cinematic inspiration. Each dog carries the legacy of legendary film characters."
-				traits={[
-					"Exclusive Partnership", 
-					"Cinematic Bloodlines", 
-					"Luxury Standards", 
-					"Premium Genetics",
-					"Professional Breeding",
-					"Legendary Legacy"
-				]}
-				buttonText="Learn More"
-				buttonAriaLabel="Learn about our partnership"
-			/>
-		</section>
+        <div class="text-center mt-12">
+          <a href="/studs" class="btn-primary">
+            View All Our Studs
+          </a>
+        </div>
+      </div>
+    </section>
 
-		<!-- Call to Action Banner -->
-		<Banner 
-			text="Ready to Welcome Your Legend? Join the exclusive circle of Maxline Bulldogs owners."
-		/>
-	</div>
+    <!-- Available Litters Section -->
+    <section class="py-16 bg-secondary">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-playfair text-accent mb-4">Available Litters</h2>
+          <p class="text-xl text-white max-w-3xl mx-auto">
+            Discover our current available litters with exceptional bloodlines and loving temperaments.
+          </p>
+          <!-- Edit in Admin comment for dev -->
+          <!-- Edit these litter details via /admin -->
+        </div>
 
-	<!-- Partnership Showcase -->
-	<section class="bg-obsidian py-16">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="text-center mb-12">
-				<h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-4">
-					Partnership with HorrorBullz HQ
-				</h2>
-				<p class="text-silver max-w-2xl mx-auto">
-					Discover the cinematic inspiration behind our champion bloodlines, where each stud embodies the dramatic presence of legendary film icons.
-				</p>
-			</div>
-			
-			<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-				<!-- Partnership showcase images -->
-				<div class="group relative overflow-hidden rounded-lg shadow-luxury hover:shadow-gold transition-all duration-300">
-					<img 
-						src="/maxlinebulldogs insta/horrorbullzhq/Joker.jpg" 
-						alt="Joker inspiration for chocolate and tan bulldogs"
-						class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-						loading="lazy"
-					/>
-					<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-					<div class="absolute bottom-4 left-4 text-white">
-						<h3 class="font-playfair font-semibold">Joker</h3>
-						<p class="text-sm text-accent">Chocolate & Tan</p>
-					</div>
-				</div>
-				
-				<div class="group relative overflow-hidden rounded-lg shadow-luxury hover:shadow-gold transition-all duration-300">
-					<img 
-						src="/maxlinebulldogs insta/horrorbullzhq/Hannibal Lecter.jpg" 
-						alt="Hannibal Lecter inspiration for dark brindle bulldogs"
-						class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-						loading="lazy"
-					/>
-					<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-					<div class="absolute bottom-4 left-4 text-white">
-						<h3 class="font-playfair font-semibold">Hannibal</h3>
-						<p class="text-sm text-accent">Dark Brindle</p>
-					</div>
-				</div>
-				
-				<div class="group relative overflow-hidden rounded-lg shadow-luxury hover:shadow-gold transition-all duration-300">
-					<img 
-						src="/maxlinebulldogs insta/horrorbullzhq/Substance.jpg" 
-						alt="The Substance inspiration for cream and white bulldogs"
-						class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-						loading="lazy"
-					/>
-					<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-					<div class="absolute bottom-4 left-4 text-white">
-						<h3 class="font-playfair font-semibold">The Substance</h3>
-						<p class="text-sm text-accent">Cream & White</p>
-					</div>
-				</div>
-				
-				<div class="group relative overflow-hidden rounded-lg shadow-luxury hover:shadow-gold transition-all duration-300">
-					<img 
-						src="/maxlinebulldogs insta/horrorbullzhq/American Psyqo.jpg" 
-						alt="American Psycho inspiration for luxury breeding standards"
-						class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-						loading="lazy"
-					/>
-					<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-					<div class="absolute bottom-4 left-4 text-white">
-						<h3 class="font-playfair font-semibold">Premium</h3>
-						<p class="text-sm text-accent">Luxury Standards</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {litters.slice(0, 2).map((litter) => (
+            <div class="relative overflow-hidden rounded-xl shadow-2xl aspect-square md:aspect-[4/3] hover:shadow-purple-500/50 transition-shadow group">
+              <img 
+                src={litter.images && litter.images.length > 0 ? (typeof litter.images[0] === 'string' ? litter.images[0] : litter.images[0].url) : '/images/puppies/puppy1.jpg'} 
+                alt={litter.title || 'Available Litter'} 
+                class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
+                <h3 class="text-xl font-bold mb-2">{litter.title || 'Available Litter'}</h3>
+                <p class="text-sm mb-3 text-gray-200">Status: {litter.status}</p>
+                <p class="text-sm mb-3 text-gray-200">Ready: {litter.ready}</p>
+                <ul class="text-sm space-y-1">
+                  {litter.colors.slice(0, 3).map((color: string) => (
+                    <li class="flex items-center">
+                      <span class="text-accent mr-2">•</span>
+                      {color}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+          
+          {/* Add more placeholders if fewer than 2 litters */}
+          {litters.length < 2 && Array.from({ length: 2 - litters.length }, (_, i) => (
+            <div class="relative overflow-hidden rounded-xl shadow-2xl aspect-square md:aspect-[4/3] bg-gradient-to-br from-primary to-charcoal border-2 border-dashed border-accent/30 hover:border-accent/50 transition-all duration-300 group">
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                <div class="text-6xl mb-4 text-accent/50">🐶</div>
+                <h3 class="text-xl font-bold text-accent mb-2">Add More Litters</h3>
+                <p class="text-sm text-gray-400 mb-4">Click below to add more litters via the admin panel</p>
+                <a href="/admin" class="inline-block px-4 py-2 bg-accent text-primary rounded-lg hover:bg-yellow-600 transition-colors text-sm font-semibold">
+                  Add Litter
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="/puppies" class="btn-primary">
+            View All Available Litters
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section class="py-16 bg-primary">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-playfair text-accent mb-4">Gallery</h2>
+          <p class="text-xl text-white max-w-3xl mx-auto">
+            Explore our collection of beautiful Mini English Bulldogs and see the quality that sets us apart.
+          </p>
+        </div>
+
+        <Gallery 
+          images={featuredImages}
+          columns={3}
+          className="luxury-gallery"
+        />
+
+        <div class="text-center mt-12">
+          <a href="/studs" class="btn-primary mr-4">
+            View Our Studs
+          </a>
+          <a href="/puppies" class="btn-secondary">
+            See Available Puppies
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Banner -->
+    <Banner 
+      title="Ready to Welcome Your New Family Member?"
+      text="Contact us today to learn more about our available puppies and breeding program. We're here to help you find the perfect Mini English Bulldog."
+      buttonText="Contact Us"
+      buttonLink="/contact"
+      className="luxury-banner"
+    />
+  </main>
 </Layout>
 
 <style>
-	/* Enhanced animations for luxury feel */
-	.fade-in {
-		opacity: 0;
-		animation: fadeIn 1s ease-in-out forwards;
-	}
-	
-	.slide-up {
-		opacity: 0;
-		transform: translateY(30px);
-		animation: slideUp 1s ease-out forwards;
-		animation-delay: 0.3s;
-	}
-	
-	/* Stagger animations for info cards */
-	.responsive-grid > :nth-child(1) {
-		animation-delay: 0.1s;
-	}
-	
-	.responsive-grid > :nth-child(2) {
-		animation-delay: 0.2s;
-	}
-	
-	.responsive-grid > :nth-child(3) {
-		animation-delay: 0.3s;
-	}
-	
-	/* Partnership showcase hover effects */
-	.group:hover .absolute {
-		backdrop-filter: blur(2px);
-	}
-	
-	/* Luxury scroll indicator */
-	.scroll-indicator {
-		position: fixed;
-		bottom: 2rem;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 30;
-	}
-	
-	@media (max-width: 768px) {
-		.partnership-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
+  .luxury-hero {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  }
+  
+  .luxury-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .luxury-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+  }
+  
+  .luxury-gallery {
+    position: relative;
+  }
+  
+  .luxury-gallery::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #D4AF37, #B8941F);
+    border-radius: 2px;
+  }
+  
+  .luxury-banner {
+    background: linear-gradient(135deg, #D4AF37 0%, #B8941F 100%);
+  }
+  
+  .btn-primary {
+    @apply bg-accent hover:bg-yellow-600 text-primary font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply border-2 border-accent hover:bg-accent hover:text-primary text-accent font-semibold py-3 px-8 rounded-lg transition-all duration-300;
+  }
 </style> 

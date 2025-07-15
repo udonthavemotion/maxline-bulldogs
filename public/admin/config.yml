@@ -1,0 +1,276 @@
+backend:
+  name: github
+  repo: udonthavemotion/maxline-bulldogs
+  branch: main
+
+# For local development, uncomment the following:
+local_backend: true
+
+# Editorial workflow for better content management
+editorial_workflow: true
+
+# Global media settings
+media_folder: "public/images"
+public_folder: "/images"
+
+# Media library configuration for better UX
+# Using default file-based media handling for simplicity
+
+collections:
+  # === BREEDING STUDS MANAGEMENT ===
+  - name: "studs"
+    label: "🐕 Manage Studs"
+    label_singular: "Stud"
+    description: "Manage your champion breeding studs - Easy drag-and-drop photo uploads!"
+    folder: "src/content/studs"
+    create: true
+    format: "frontmatter"
+    extension: "md"
+    slug: "{{slug}}"
+    media_folder: "public/images/studs"
+    public_folder: "/images/studs"
+    summary: "{{title}} - {{description | truncate(50)}}"
+    sortable_fields: ['title', 'commit_date']
+    view_filters:
+      - label: "Recent"
+        field: commit_date
+        pattern: front_matter
+    fields:
+      - { 
+          name: "title", 
+          label: "🏆 Stud Name", 
+          widget: "string",
+          required: true,
+          default: "New Stud Name",
+          hint: "Enter the stud's name (e.g., 'American Psyqo', 'The Joker')"
+        }
+      - { 
+          name: "description", 
+          label: "📝 Description", 
+          widget: "text",
+          required: true,
+          default: "Edit me with your champion details - add personality and characteristics here.",
+          hint: "Brief description of the stud's personality and characteristics"
+        }
+      - { 
+          name: "features", 
+          label: "✨ Key Features", 
+          widget: "list",
+          required: true,
+          default: ["AKC Certified", "Health Cleared", "Champion Bloodline", "Excellent Temperament"],
+          hint: "Add key features like 'Champion Bloodline', 'Compact Build', etc.",
+          field: { name: "feature", label: "Feature", widget: "string" },
+          min: 1,
+          max: 10
+        }
+      - { 
+          name: "image", 
+          label: "📸 Main Photo", 
+          widget: "image",
+          required: true,
+          hint: "Drag photo here - auto-saves to /images/studs/ folder. Best size: 800x600px. This is the featured image that shows on cards."
+        }
+      - { 
+          name: "images", 
+          label: "📷 Gallery Photos", 
+          widget: "list",
+          required: false,
+          hint: "Upload multiple photos for this stud's gallery - drag and drop multiple images here",
+          field: { 
+            name: "url", 
+            label: "Photo", 
+            widget: "image"
+          },
+          max: 20
+        }
+      - { 
+          name: "body", 
+          label: "📄 Detailed Information", 
+          widget: "markdown", 
+          required: false,
+          hint: "Optional: Add detailed breeding information, health records, etc."
+        }
+
+  # === LITTERS & PUPPIES MANAGEMENT ===  
+  - name: "litters"
+    label: "🐶 Manage Litters/Puppies"
+    label_singular: "Litter"
+    description: "Manage puppy litters and availability - Multiple photos supported!"
+    folder: "src/content/litters"
+    create: true
+    format: "frontmatter"
+    extension: "md"
+    slug: "{{slug}}"
+    media_folder: "public/images/litters"
+    public_folder: "/images/litters"
+    summary: "{{status}} - Ready: {{ready}}"
+    sortable_fields: ['ready', 'status', 'commit_date']
+    view_filters:
+      - label: "Available"
+        field: status
+        pattern: "Available"
+      - label: "Reserved"
+        field: status
+        pattern: "Reserved"
+    fields:
+      - { 
+          name: "title",
+          label: "📋 Litter Name",
+          widget: "string",
+          required: true,
+          default: "New Litter - Edit Name",
+          hint: "Name this litter (e.g., 'Spring 2025 Litter', 'Joker x Princess Litter')"
+        }
+      - { 
+          name: "status", 
+          label: "📊 Availability Status", 
+          widget: "select",
+          required: true,
+          options: [
+            { label: "Available Now", value: "Available" },
+            { label: "Reserved/Sold", value: "Reserved" },
+            { label: "Coming Soon", value: "Coming Soon" },
+            { label: "Waitlist Open", value: "Waitlist" }
+          ],
+          hint: "Current availability status of this litter"
+        }
+      - { 
+          name: "colors", 
+          label: "🎨 Available Colors", 
+          widget: "list",
+          required: true,
+          default: ["Fawn", "Brindle", "Cream"],
+          hint: "Add available puppy colors (e.g., 'Fawn', 'Brindle', 'Cream')",
+          field: { name: "color", label: "Color", widget: "string" },
+          min: 1
+        }
+      - { 
+          name: "ready", 
+          label: "📅 Ready Date", 
+          widget: "string",
+          required: true,
+          default: "8 weeks",
+          hint: "When will puppies be ready? (e.g., 'March 2025', 'Ready Now')"
+        }
+      - { 
+          name: "images", 
+          label: "📸 Puppy Photos", 
+          widget: "list",
+          required: false,
+          hint: "Upload multiple photos - shows as gallery on website",
+          field: { 
+            name: "url", 
+            label: "Photo", 
+            widget: "image",
+            media_library: {
+              config: { multiple: false, max_file_size: 2097152 }
+            }
+          },
+          max: 20
+        }
+      - { 
+          name: "body", 
+          label: "📄 Additional Details", 
+          widget: "markdown", 
+          required: false,
+          hint: "Optional: Add pricing, health info, breeding details, etc."
+        }
+
+  # === PHOTO GALLERY MANAGEMENT ===
+  - name: "photos"
+    label: "📷 Upload Photos"
+    label_singular: "Photo"
+    description: "Upload and organize photos for your gallery - Auto-categorized!"
+    folder: "src/content/photos"
+    create: true
+    format: "frontmatter"
+    extension: "md"
+    slug: "{{category}}-{{slug}}"
+    summary: "{{title}} ({{category}})"
+    sortable_fields: ['title', 'category', 'commit_date']
+    view_filters:
+      - label: "Stud Photos"
+        field: category
+        pattern: "studs"
+      - label: "Litter Photos"
+        field: category
+        pattern: "litters"
+      - label: "General Photos"
+        field: category
+        pattern: "general"
+    fields:
+      - { 
+          name: "title", 
+          label: "🏷️ Photo Title", 
+          widget: "string",
+          required: true,
+          hint: "Give this photo a descriptive title (e.g., 'Joker Portrait', 'Spring Puppies')"
+        }
+      - { 
+          name: "category", 
+          label: "📁 Category", 
+          widget: "select",
+          required: true,
+          default: "studs",
+          options: [
+            { label: "🐕 Stud Photos", value: "studs" },
+            { label: "🐶 Litter/Puppy Photos", value: "litters" },
+            { label: "📸 General Photos", value: "general" }
+          ],
+          hint: "Choose category - determines which folder the photo goes to"
+        }
+      - { 
+          name: "image", 
+          label: "📸 Upload Photo", 
+          widget: "image",
+          required: true,
+          hint: "Drag photo here - auto-saves to category folder. Optimized for web!",
+          media_library: {
+            config: {
+              multiple: false,
+              max_file_size: 2097152,
+              default_transformations: [
+                { width: 800, height: 600, crop: "fit", quality: "auto" }
+              ]
+            }
+          }
+        }
+      - { 
+          name: "alt", 
+          label: "♿ Alt Text", 
+          widget: "string",
+          required: true,
+          hint: "Describe the photo for accessibility (e.g., 'Champion bulldog Joker sitting in grass')"
+        }
+      - { 
+          name: "body", 
+          label: "📝 Photo Description", 
+          widget: "markdown", 
+          required: false,
+          hint: "Optional: Add story behind the photo, date taken, etc."
+        }
+
+# === ADMIN INSTRUCTIONS ===
+# 🎯 QUICK START GUIDE:
+# 1. Navigate sidebar: Click collection names to manage content
+# 2. Add New: Click "+ New [Item]" button in any collection  
+# 3. Upload Photos: Drag images directly into photo fields
+# 4. Preview: Use "Preview" tab to see how content looks
+# 5. Save: Click "Save" to publish immediately, or "Save as Draft" for review
+# 6. Auto-Organization: Photos automatically go to correct folders based on category
+#
+# 💡 PRO TIPS:
+# - Use Editorial Workflow (drafts) for team review before publishing
+# - Photos are automatically optimized for web performance
+# - Alt text is important for SEO and accessibility
+# - Use descriptive titles and categories for better organization
+#
+# 🆘 NEED HELP? Contact your developer or check the documentation
+
+# GitHub OAuth setup instructions:
+# 1. Go to https://github.com/settings/applications/new
+# 2. Application name: "Maxline Bulldogs CMS"
+# 3. Homepage URL: https://maxlinebulldogs.com
+# 4. Authorization callback URL: https://maxlinebulldogs.com/admin/
+# 5. Add CLIENT_ID and CLIENT_SECRET to your deployment environment variables
+# 6. For Vercel: Add GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in project settings 

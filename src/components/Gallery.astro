@@ -1,86 +1,246 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
 export interface Props {
-  images: Array<{
+  images?: Array<{
     src: string;
     alt: string;
     title?: string;
     category?: string;
+    photographer?: string;
+    dateTaken?: string;
+    location?: string;
+    featured?: boolean;
   }>;
+  category?: 'studs' | 'litters' | 'general';
   title?: string;
   className?: string;
   columns?: number;
+  limit?: number;
+  showCategory?: boolean;
+  aspectRatio?: 'square' | 'landscape' | 'portrait';
 }
 
-const { images, title, className = '', columns = 3 } = Astro.props;
-const gridCols = columns === 2 ? 'grid-cols-2' : columns === 4 ? 'grid-cols-4' : 'grid-cols-3';
+const { 
+  images, 
+  category, 
+  title, 
+  className = '', 
+  columns = 3, 
+  limit,
+  showCategory = true,
+  aspectRatio = 'square'
+} = Astro.props;
+
+// If no images provided, fetch from content collections
+let galleryImages = images || [];
+
+if (!images && category) {
+  const photos = await getCollection('photos');
+  const filteredPhotos = photos.filter(photo => photo.data.category === category);
+  galleryImages = filteredPhotos.map(photo => ({
+    src: photo.data.image,
+    alt: photo.data.alt,
+    title: photo.data.title,
+    category: photo.data.category,
+    photographer: photo.data.photographer,
+    dateTaken: photo.data.dateTaken,
+    location: photo.data.location,
+    featured: photo.data.featured
+  }));
+}
+
+// Sort by featured first, then by title
+galleryImages.sort((a, b) => {
+  if (a.featured && !b.featured) return -1;
+  if (!a.featured && b.featured) return 1;
+  return (a.title || '').localeCompare(b.title || '');
+});
+
+// Apply limit if specified
+if (limit && galleryImages.length > limit) {
+  galleryImages = galleryImages.slice(0, limit);
+}
+
+// Responsive grid classes
+const getGridClasses = (cols: number) => {
+  switch(cols) {
+    case 1: return 'grid-cols-1';
+    case 2: return 'grid-cols-1 sm:grid-cols-2';
+    case 4: return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4';
+    case 5: return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5';
+    default: return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+  }
+};
+
+const gridCols = getGridClasses(columns);
+
+// Aspect ratio classes
+const aspectClasses = {
+  square: 'aspect-square',
+  landscape: 'aspect-video',
+  portrait: 'aspect-[3/4]'
+};
+
+const categoryColors: Record<string, string> = {
+  studs: 'text-amber-400',
+  litters: 'text-blue-400', 
+  general: 'text-green-400'
+};
+
+const categoryIcons: Record<string, string> = {
+  studs: '🐕',
+  litters: '🐶',
+  general: '📸'
+};
 ---
 
 <div class={`gallery-container ${className}`}>
   {title && (
-    <h3 class="text-2xl font-playfair text-accent mb-6 text-center">{title}</h3>
+    <div class="text-center mb-8">
+      <h3 class="text-3xl font-playfair text-accent mb-2">{title}</h3>
+      <div class="w-24 h-1 bg-gradient-to-r from-accent to-yellow-600 mx-auto rounded-full"></div>
+    </div>
   )}
   
-  <div class={`grid ${gridCols} gap-4 md:gap-6`}>
-    {images.map((image, index) => (
-      <div class="gallery-item group cursor-pointer relative overflow-hidden rounded-lg shadow-luxury hover:shadow-gold transition-all duration-300">
-        <img 
-          src={image.src}
-          alt={image.alt}
-          class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
-          onclick={`openLightbox(${index})`}
-        />
-        <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          {image.title && (
-            <h4 class="font-playfair text-lg mb-1">{image.title}</h4>
+  {galleryImages.length > 0 ? (
+    <div class={`grid ${gridCols} gap-4 md:gap-6`}>
+      {galleryImages.map((image, index) => (
+        <div class="gallery-item group cursor-pointer relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+          {/* Featured Badge */}
+          {image.featured && (
+            <div class="absolute top-4 left-4 z-10 bg-accent text-primary text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+              ⭐ Featured
+            </div>
           )}
-          {image.category && (
-            <span class="text-sm text-accent">{image.category}</span>
-          )}
+          
+          <!-- Using Astro's optimized Image component -->
+          <div class={`relative ${aspectClasses[aspectRatio]} overflow-hidden`}>
+            <Image 
+              src={image.src}
+              alt={image.alt}
+              format="webp"
+              width={800}
+              height={600}
+              widths={[300, 600, 800]}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              loading="lazy"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              onclick={`openLightbox(${index})`}
+            />
+            
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            <!-- Content Overlay -->
+            <div class="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+              {image.title && (
+                <h4 class="font-playfair text-lg mb-2 font-semibold text-shadow">{image.title}</h4>
+              )}
+              
+              <div class="flex items-center justify-between">
+                {showCategory && image.category && (
+                  <span class={`text-sm flex items-center gap-1 ${categoryColors[image.category] || 'text-white'}`}>
+                    <span>{categoryIcons[image.category] || '📸'}</span>
+                    <span class="capitalize">{image.category}</span>
+                  </span>
+                )}
+                
+                {image.location && (
+                  <span class="text-xs text-gray-300 flex items-center gap-1">
+                    📍 {image.location}
+                  </span>
+                )}
+              </div>
+              
+              {image.photographer && (
+                <p class="text-xs text-gray-300 mt-1">📷 {image.photographer}</p>
+              )}
+            </div>
+          </div>
         </div>
+      ))}
+    </div>
+  ) : (
+    <div class="text-center py-16 text-gray-400">
+      <div class="max-w-md mx-auto">
+        <div class="text-6xl mb-4">📸</div>
+        <h4 class="text-xl font-playfair text-white mb-2">No Photos Yet</h4>
+        <p class="text-gray-400">
+          {category 
+            ? `No ${category} photos have been uploaded yet. Check back soon for new content!`
+            : "No images available in this category yet."
+          }
+        </p>
+        {category && (
+          <a href="/admin" class="inline-block mt-4 px-6 py-2 bg-accent text-primary rounded-lg hover:bg-yellow-600 transition-colors">
+            Upload Photos
+          </a>
+        )}
       </div>
-    ))}
-  </div>
+    </div>
+  )}
 </div>
 
-<!-- Lightbox Modal -->
-<div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center">
-  <div class="relative max-w-4xl max-h-full p-4">
+<!-- Enhanced Lightbox Modal -->
+<div id="lightbox" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+  <div class="relative max-w-6xl max-h-full w-full">
+    <!-- Close Button -->
     <button 
       id="lightbox-close" 
-      class="absolute top-4 right-4 text-white text-4xl hover:text-accent transition-colors z-10"
+      class="absolute top-4 right-4 text-white text-4xl hover:text-accent transition-colors z-20 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70"
       onclick="closeLightbox()"
+      aria-label="Close lightbox"
     >
-      &times;
+      ×
     </button>
     
+    <!-- Navigation Buttons -->
     <button 
       id="lightbox-prev" 
-      class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl hover:text-accent transition-colors z-10"
+      class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl hover:text-accent transition-colors z-20 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70"
       onclick="prevImage()"
+      aria-label="Previous image"
     >
-      &#8249;
+      ‹
     </button>
     
     <button 
       id="lightbox-next" 
-      class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl hover:text-accent transition-colors z-10"
+      class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl hover:text-accent transition-colors z-20 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/70"
       onclick="nextImage()"
+      aria-label="Next image"
     >
-      &#8250;
+      ›
     </button>
     
-    <img 
-      id="lightbox-image" 
-      class="max-w-full max-h-full object-contain"
-      src=""
-      alt=""
-    />
+    <!-- Image Container -->
+    <div class="flex items-center justify-center h-full">
+      <img 
+        id="lightbox-image" 
+        class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+        src=""
+        alt=""
+      />
+    </div>
     
-    <div class="text-center mt-4 text-white">
-      <h4 id="lightbox-title" class="font-playfair text-xl mb-2"></h4>
-      <span id="lightbox-category" class="text-accent"></span>
+    <!-- Image Info -->
+    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent text-white p-6">
+      <div class="text-center max-w-2xl mx-auto">
+        <h4 id="lightbox-title" class="font-playfair text-2xl mb-2"></h4>
+        <div class="flex items-center justify-center gap-4 text-sm text-gray-300">
+          <span id="lightbox-category" class="capitalize"></span>
+          <span id="lightbox-photographer"></span>
+          <span id="lightbox-location"></span>
+          <span id="lightbox-date"></span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Image Counter -->
+    <div id="lightbox-counter" class="absolute top-4 left-1/2 transform -translate-x-1/2 text-white text-sm bg-black/50 px-3 py-1 rounded-full">
+      <span id="current-image">1</span> / <span id="total-images">1</span>
     </div>
   </div>
 </div>
@@ -92,24 +252,42 @@ const gridCols = columns === 2 ? 'grid-cols-2' : columns === 4 ? 'grid-cols-4' :
 
   function openLightbox(index) {
     currentImageIndex = index;
+    updateLightboxContent();
+    
     const lightbox = document.getElementById('lightbox');
-    const lightboxImage = document.getElementById('lightbox-image');
-    const lightboxTitle = document.getElementById('lightbox-title');
-    const lightboxCategory = document.getElementById('lightbox-category');
-    
-    if (!lightbox || !lightboxImage || !lightboxTitle || !lightboxCategory) return;
-    
-    const image = galleryImages[index];
-    if (!image) return;
-    
-    lightboxImage.src = image.src;
-    lightboxImage.alt = image.alt;
-    lightboxTitle.textContent = image.title || '';
-    lightboxCategory.textContent = image.category || '';
+    if (!lightbox) return;
     
     lightbox.classList.remove('hidden');
     lightbox.classList.add('flex');
     document.body.style.overflow = 'hidden';
+  }
+
+  function updateLightboxContent() {
+    const image = galleryImages[currentImageIndex];
+    if (!image) return;
+    
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxCategory = document.getElementById('lightbox-category');
+    const lightboxPhotographer = document.getElementById('lightbox-photographer');
+    const lightboxLocation = document.getElementById('lightbox-location');
+    const lightboxDate = document.getElementById('lightbox-date');
+    const currentImageSpan = document.getElementById('current-image');
+    const totalImagesSpan = document.getElementById('total-images');
+    
+    if (lightboxImage) {
+      lightboxImage.src = image.src;
+      lightboxImage.alt = image.alt;
+    }
+    
+    if (lightboxTitle) lightboxTitle.textContent = image.title || '';
+    if (lightboxCategory) lightboxCategory.textContent = image.category ? `${image.category}` : '';
+    if (lightboxPhotographer) lightboxPhotographer.textContent = image.photographer ? `📷 ${image.photographer}` : '';
+    if (lightboxLocation) lightboxLocation.textContent = image.location ? `📍 ${image.location}` : '';
+    if (lightboxDate) lightboxDate.textContent = image.dateTaken ? `📅 ${image.dateTaken}` : '';
+    
+    if (currentImageSpan) currentImageSpan.textContent = (currentImageIndex + 1).toString();
+    if (totalImagesSpan) totalImagesSpan.textContent = galleryImages.length.toString();
   }
 
   function closeLightbox() {
@@ -123,22 +301,29 @@ const gridCols = columns === 2 ? 'grid-cols-2' : columns === 4 ? 'grid-cols-4' :
 
   function prevImage() {
     currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-    openLightbox(currentImageIndex);
+    updateLightboxContent();
   }
 
   function nextImage() {
     currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
-    openLightbox(currentImageIndex);
+    updateLightboxContent();
   }
 
-  // Close lightbox on escape key
+  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeLightbox();
-    } else if (e.key === 'ArrowLeft') {
-      prevImage();
-    } else if (e.key === 'ArrowRight') {
-      nextImage();
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox || lightbox.classList.contains('hidden')) return;
+    
+    switch(e.key) {
+      case 'Escape':
+        closeLightbox();
+        break;
+      case 'ArrowLeft':
+        prevImage();
+        break;
+      case 'ArrowRight':
+        nextImage();
+        break;
     }
   });
 
@@ -151,37 +336,25 @@ const gridCols = columns === 2 ? 'grid-cols-2' : columns === 4 ? 'grid-cols-4' :
 </script>
 
 <!-- Pass image data to JavaScript -->
-<script id="gallery-data" type="application/json" is:inline set:html={JSON.stringify(images)}></script>
+<script id="gallery-data" type="application/json" is:inline set:html={JSON.stringify(galleryImages)}></script>
 
 <style>
   .gallery-item {
-    aspect-ratio: 1;
+    @apply bg-charcoal rounded-xl overflow-hidden;
   }
   
-  .gallery-item img {
-    transition: transform 0.3s ease;
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
   }
   
-  .gallery-item:hover img {
-    transform: scale(1.05);
-  }
-  
-  #lightbox {
-    backdrop-filter: blur(5px);
-  }
-  
-  #lightbox-image {
-    max-height: 80vh;
-    max-width: 80vw;
-  }
-  
-  /* Custom scrollbar for gallery */
+  /* Custom scrollbar */
   .gallery-container::-webkit-scrollbar {
     width: 8px;
   }
   
   .gallery-container::-webkit-scrollbar-track {
     background: #1a1a1a;
+    border-radius: 4px;
   }
   
   .gallery-container::-webkit-scrollbar-thumb {
@@ -191,5 +364,40 @@ const gridCols = columns === 2 ? 'grid-cols-2' : columns === 4 ? 'grid-cols-4' :
   
   .gallery-container::-webkit-scrollbar-thumb:hover {
     background: #B8941F;
+  }
+  
+  /* Smooth transitions for all interactive elements */
+  .gallery-item,
+  .gallery-item img,
+  button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Loading state animation */
+  @keyframes shimmer {
+    0% { background-position: -200px 0; }
+    100% { background-position: calc(200px + 100%) 0; }
+  }
+  
+  .loading-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  /* Accessibility improvements */
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-item,
+    .gallery-item img,
+    button {
+      transition: none;
+    }
+  }
+  
+  /* Focus states for keyboard navigation */
+  .gallery-item:focus,
+  button:focus {
+    outline: 2px solid #D4AF37;
+    outline-offset: 2px;
   }
 </style> 

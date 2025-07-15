@@ -1,0 +1,64 @@
+backend:
+  name: github
+  repo: udonthavemotion/maxline-bulldogs
+  branch: main
+
+# For local development, uncomment the following:
+local_backend: true
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  # Studs Collection
+  - name: "studs"
+    label: "Studs"
+    folder: "src/content/studs"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "description", label: "Description", widget: "text" }
+      - { name: "features", label: "Features", widget: "list" }
+      - { name: "image", label: "Image", widget: "image" }
+      - { name: "body", label: "Body", widget: "markdown", required: false }
+
+  # Litters Collection
+  - name: "litters"
+    label: "Litters"
+    folder: "src/content/litters"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { name: "status", label: "Status", widget: "string" }
+      - { name: "colors", label: "Colors", widget: "list" }
+      - { name: "ready", label: "Ready", widget: "string" }
+      - { name: "images", label: "Images", widget: "list", field: { name: "image", widget: "image" } }
+      - { name: "body", label: "Body", widget: "markdown", required: false }
+
+  # Photos Collection
+  - name: "photos"
+    label: "Photos"
+    folder: "src/content/photos"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "category", label: "Category", widget: "select", options: ["studs", "litters"] }
+      - { name: "image", label: "Image", widget: "image" }
+      - { name: "alt", label: "Alt Text", widget: "string" }
+      - { name: "body", label: "Body", widget: "markdown", required: false }
+
+# GitHub OAuth setup instructions:
+# 1. Go to https://github.com/settings/applications/new
+# 2. Application name: "Maxline Bulldogs CMS"
+# 3. Homepage URL: https://maxlinebulldogs.com
+# 4. Authorization callback URL: https://maxlinebulldogs.com/admin/
+# 5. Add CLIENT_ID and CLIENT_SECRET to your deployment environment variables
+# 6. For Vercel: Add GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in project settings 

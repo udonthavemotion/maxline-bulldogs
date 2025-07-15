@@ -1,473 +1,413 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import InfoCard from '../components/InfoCard.astro';
 import Gallery from '../components/Gallery.astro';
-import VideoHero from '../components/VideoHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import { getCollection } from 'astro:content';
 
-// Stud profiles with cinematic theming and media assignments
-// TODO: Map images to studs accurately; integrate Stripe payments
-const studs = [
-  {
-    id: 'joker',
-    name: 'Joker',
-    subtitle: 'The Chocolate Mastermind',
-    description: 'Meet our chocolate and tan champion, embodying the charismatic unpredictability of the legendary villain. Joker brings a perfect balance of playful mischief and noble temperament.',
-    traits: [
-      'Chocolate & Tan Coloring',
-      'AKC Champion Bloodlines',
-      'Playful & Charismatic',
-      'Health Cleared',
-      'Proven Genetics',
-      'Premium Stud Fee'
-    ],
-    stats: {
-      'Weight': '28 lbs',
-      'Height': '14 inches',
-      'Age': '3 years',
-      'Sire': 'Champion Bloodline',
-      'Dam': 'Champion Bloodline',
-      'Fee': '$2,500'
-    },
-    media: [
-      {
-        src: '/maxlinebulldogs insta/horrorbullzhq/Joker.jpg',
-        alt: 'Joker - Chocolate and tan AKC Mini English Bulldog stud',
-        title: 'Joker Portrait',
-        category: 'Reference'
-      },
-      {
-        src: '/maxlinebulldogs insta/horrorbullzhq/joker1.jpg',
-        alt: 'Joker character inspiration for chocolate bulldogs',
-        title: 'Cinematic Inspiration',
-        category: 'Inspiration'
-      },
-      {
-        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1744558229_3609938532074007372_69185781706.jpg',
-        alt: 'Chocolate colored bulldog representing Joker lineage',
-        title: 'Joker Lineage',
-        category: 'Bloodline'
-      }
-    ],
-    theme: 'joker'
-  },
-  {
-    id: 'nirvana',
-    name: 'Nirvana',
-    subtitle: 'The Lilac Dream',
-    description: 'Our serene lilac merle beauty represents the ethereal calm of nirvana. With her stunning coat and gentle demeanor, she embodies peaceful perfection.',
-    traits: [
-      'Lilac Merle Coloring',
-      'AKC Champion Bloodlines',
-      'Gentle & Serene',
-      'Health Cleared',
-      'Exceptional Genetics',
-      'Premium Stud Fee'
-    ],
-    stats: {
-      'Weight': '26 lbs',
-      'Height': '13 inches',
-      'Age': '2.5 years',
-      'Sire': 'Champion Bloodline',
-      'Dam': 'Champion Bloodline',
-      'Fee': '$3,000'
-    },
-    media: [
-      {
-        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1745151506_3614915296429053314_69185781706.jpg',
-        alt: 'Lilac merle bulldog representing Nirvana lineage',
-        title: 'Nirvana Beauty',
-        category: 'Bloodline'
-      },
-      {
-        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1739303318_3565857147025371750_69185781706.jpg',
-        alt: 'Serene bulldog with lilac coloring',
-        title: 'Peaceful Presence',
-        category: 'Bloodline'
-      }
-    ],
-    theme: 'nirvana'
-  },
-  {
-    id: 'hannibal',
-    name: 'Hannibal',
-    subtitle: 'The Dark Sovereign',
-    description: 'Commanding presence meets refined elegance in our dark brindle champion. Hannibal represents the sophisticated darkness of the legendary character.',
-    traits: [
-      'Dark Brindle Coloring',
-      'AKC Champion Bloodlines',
-      'Commanding Presence',
-      'Health Cleared',
-      'Dominant Genetics',
-      'Premium Stud Fee'
-    ],
-    stats: {
-      'Weight': '32 lbs',
-      'Height': '15 inches',
-      'Age': '4 years',
-      'Sire': 'Champion Bloodline',
-      'Dam': 'Champion Bloodline',
-      'Fee': '$2,800'
-    },
-    media: [
-      {
-        src: '/maxlinebulldogs insta/horrorbullzhq/Hannibal Lecter.jpg',
-        alt: 'Hannibal Lecter inspiration for dark brindle bulldogs',
-        title: 'Hannibal Portrait',
-        category: 'Reference'
-      },
-      {
-        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1741419816_3583611611723144500_69185781706.jpg',
-        alt: 'Dark brindle bulldog representing Hannibal lineage',
-        title: 'Dark Majesty',
-        category: 'Bloodline'
-      }
-    ],
-    theme: 'hannibal'
-  },
-  {
-    id: 'substance',
-    name: 'The Substance',
-    subtitle: 'The Ethereal Beauty',
-    description: 'Pure elegance in cream and white, The Substance represents the ethereal beauty and transformative power of the legendary character.',
-    traits: [
-      'Cream & White Coloring',
-      'AKC Champion Bloodlines',
-      'Ethereal Beauty',
-      'Health Cleared',
-      'Rare Genetics',
-      'Premium Stud Fee'
-    ],
-    stats: {
-      'Weight': '24 lbs',
-      'Height': '12 inches',
-      'Age': '2 years',
-      'Sire': 'Champion Bloodline',
-      'Dam': 'Champion Bloodline',
-      'Fee': '$3,500'
-    },
-    media: [
-      {
-        src: '/maxlinebulldogs insta/horrorbullzhq/Substance.jpg',
-        alt: 'The Substance inspiration for cream and white bulldogs',
-        title: 'The Substance Portrait',
-        category: 'Reference'
-      },
-      {
-        src: '/maxlinebulldogs insta/horrorbullzhq/substance1.jpg',
-        alt: 'The Substance character inspiration',
-        title: 'Ethereal Inspiration',
-        category: 'Inspiration'
-      },
-      {
-        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1749873342_3654524932009186630_69185781706.jpg',
-        alt: 'Cream and white bulldog representing The Substance lineage',
-        title: 'Pure Elegance',
-        category: 'Bloodline'
-      }
-    ],
-    theme: 'substance'
-  },
-  {
-    id: 'sandman',
-    name: 'The Sandman',
-    subtitle: 'The Golden Dream',
-    description: 'Our golden fawn champion embodies the dreamy mystique of The Sandman. With his hypnotic presence and golden coat, he brings dreams to life.',
-    traits: [
-      'Golden Fawn Coloring',
-      'AKC Champion Bloodlines',
-      'Dreamy Temperament',
-      'Health Cleared',
-      'Mystical Genetics',
-      'Premium Stud Fee'
-    ],
-    stats: {
-      'Weight': '30 lbs',
-      'Height': '14 inches',
-      'Age': '3.5 years',
-      'Sire': 'Champion Bloodline',
-      'Dam': 'Champion Bloodline',
-      'Fee': '$2,700'
-    },
-    media: [
-      {
-        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1746319677_3624714632129571945_69185781706.jpg',
-        alt: 'Golden fawn bulldog representing The Sandman lineage',
-        title: 'Golden Dreams',
-        category: 'Bloodline'
-      },
-      {
-        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1745766965_3620078140636059941_69185781706.jpg',
-        alt: 'Dreamy fawn colored bulldog',
-        title: 'Mystical Presence',
-        category: 'Bloodline'
-      }
-    ],
-    theme: 'sandman'
-  },
-  {
-    id: 'harley',
-    name: 'Harley Quinn',
-    subtitle: 'The Playful Rebel',
-    description: 'Our tri-color piebald champion captures the playful chaos and vibrant energy of Harley Quinn. Bold, beautiful, and irresistibly charming.',
-    traits: [
-      'Tri-Color Piebald',
-      'AKC Champion Bloodlines',
-      'Playful & Energetic',
-      'Health Cleared',
-      'Vibrant Genetics',
-      'Premium Stud Fee'
-    ],
-    stats: {
-      'Weight': '25 lbs',
-      'Height': '13 inches',
-      'Age': '2.5 years',
-      'Sire': 'Champion Bloodline',
-      'Dam': 'Champion Bloodline',
-      'Fee': '$3,200'
-    },
-    media: [
-      {
-        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1747346710_3633330005343056233_69185781706.jpg',
-        alt: 'Tri-color piebald bulldog representing Harley Quinn lineage',
-        title: 'Playful Chaos',
-        category: 'Bloodline'
-      },
-      {
-        src: '/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1744626227_3610508941496664062_69185781706.jpg',
-        alt: 'Vibrant colored bulldog with playful expression',
-        title: 'Rebel Beauty',
-        category: 'Bloodline'
-      }
-    ],
-    theme: 'harley'
-  }
-];
+// Get studs from content collection with error handling
+let allStuds: any;
+let studs: any[] = [];
+
+try {
+  allStuds = await getCollection('studs');
+  // Transform studs for display with enhanced data
+  studs = allStuds.map((stud: any) => ({
+    title: stud.data.title,
+    description: stud.data.description,
+    features: stud.data.features || [],
+    image: stud.data.image,
+    images: stud.data.images || [], // Gallery images
+    slug: stud.slug,
+    content: stud.body || '',
+    // Support for optional fields from enhanced schema
+    body: stud.data.body
+  }));
+} catch (error) {
+  console.error('Error loading studs:', error);
+  studs = [];
+}
+
+// Get photos specifically for studs category
+let studPhotos = [];
+try {
+  const allPhotos = await getCollection('photos');
+  studPhotos = allPhotos
+    .filter(photo => photo.data.category === 'studs')
+    .map(photo => ({
+      src: photo.data.image,
+      alt: photo.data.alt,
+      title: photo.data.title,
+      category: photo.data.category,
+      photographer: photo.data.photographer,
+      dateTaken: photo.data.dateTaken,
+      location: photo.data.location,
+      featured: photo.data.featured || false
+    }));
+} catch (error) {
+  console.error('Error loading photos:', error);
+  studPhotos = [];
+}
 ---
 
-<Layout title="Champion Studs | Maxline Bulldogs" description="Meet our cinematic lineup of AKC Champion Mini English Bulldogs. Each stud embodies legendary film characters: Joker, Nirvana, Hannibal, The Substance, The Sandman, and Harley Quinn.">
-  <!-- Hero Section -->
-  <VideoHero 
-    videoSrc="/maxlinebulldogs insta/maxline/maxlinebulldogs/maxlinebulldogs_1745394952_3616957193120315146_69185781706.mp4"
-    title="Meet Our Champions"
-    subtitle="Cinematic Legends in Every Bloodline"
-    overlay={true}
-    autoplay={true}
-    loop={true}
-    muted={true}
-    className="h-[70vh]"
-  />
+<Layout 
+  title="Champion Studs - Maxline Bulldogs"
+  description="Meet our exceptional breeding studs, each with championship bloodlines and distinctive personalities. Premium AKC Mini English Bulldogs from Maxline Bulldogs."
+  keywords="AKC Mini English Bulldogs, Champion Studs, Breeding Males, Premium Bloodlines, Maxline Bulldogs"
+  type="website"
+>
+  <main class="min-h-screen">
+    <!-- Enhanced Header with Gradient -->
+    <SectionHeader
+      title="Champion Studs"
+      sliderTexts={["Meet Our Exceptional Breeding Males", "Championship Bloodlines", "Distinctive Personalities", "Premium AKC Certified"]}
+    />
 
-  <!-- Main Content -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <!-- Introduction -->
-    <div class="text-center mb-16 fade-in">
-      <h1 class="text-4xl md:text-5xl font-playfair font-bold text-accent mb-6">
-        Our Champion Studs
-      </h1>
-      <p class="text-xl text-silver max-w-3xl mx-auto leading-relaxed">
-        Each of our champion studs embodies the dramatic presence and legendary status of iconic film characters. 
-        Born from champion bloodlines and raised with cinematic inspiration, they represent the pinnacle of 
-        AKC Mini English Bulldog breeding excellence.
-      </p>
-    </div>
-
-    <!-- Stud Profiles -->
-    <div class="space-y-24">
-      {studs.map((stud, index) => (
-        <section class={`stud-profile ${stud.theme} ${index % 2 === 0 ? 'slide-left' : 'slide-right'}`}>
-          <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${index % 2 === 0 ? '' : 'lg:flex-row-reverse'}`}>
-            <!-- Stud Info -->
-            <div class={`${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
-              <div class="mb-8">
-                <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-2">
-                  {stud.name}
-                </h2>
-                <p class="text-xl text-silver mb-6 italic">
-                  {stud.subtitle}
-                </p>
-                <p class="text-lg text-white leading-relaxed mb-8">
-                  {stud.description}
-                </p>
-              </div>
-
-              <!-- Traits -->
-              <div class="mb-8">
-                <h3 class="text-xl font-playfair font-semibold text-accent mb-4">
-                  Champion Traits
-                </h3>
-                <ul class="grid grid-cols-2 gap-2">
-                  {stud.traits.map(trait => (
-                    <li class="flex items-center text-silver">
-                      <span class="text-accent mr-2">★</span>
-                      {trait}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <!-- Stats Table -->
-              <div class="bg-card-gradient p-6 rounded-lg border border-accent border-opacity-20">
-                <h3 class="text-xl font-playfair font-semibold text-accent mb-4">
-                  Stud Information
-                </h3>
-                <div class="grid grid-cols-2 gap-4">
-                  {Object.entries(stud.stats).map(([key, value]) => (
-                    <div class="border-b border-accent border-opacity-20 pb-2">
-                      <dt class="text-sm text-silver">{key}</dt>
-                      <dd class="text-lg text-white font-semibold">{value}</dd>
-                    </div>
-                  ))}
+    <!-- Studs Collection Section -->
+    {studs.length > 0 ? (
+      <section class="py-16 relative">
+        <!-- Background decoration -->
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent pointer-events-none"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-playfair text-accent mb-4">
+              Our Distinguished Studs
+            </h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-accent to-yellow-600 mx-auto rounded-full mb-4"></div>
+            <p class="text-xl text-silver max-w-3xl mx-auto">
+              Each of our champion studs brings exceptional genetics, temperament, and conformation to our breeding program.
+            </p>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {studs.slice(0, 6).map((stud) => (
+              <div class="relative overflow-hidden rounded-xl shadow-2xl aspect-square md:aspect-[4/3] hover:shadow-purple-500/50 transition-shadow group">
+                <img 
+                  src={stud.image || '/images/studs/joker1.jpg'} 
+                  alt={stud.title} 
+                  class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
+                  <h3 class="text-xl font-bold mb-2">{stud.title}</h3>
+                  <p class="text-sm mb-3 text-gray-200">{stud.description}</p>
+                  <ul class="text-sm space-y-1">
+                    {stud.features.map((feature: string) => (
+                      <li class="flex items-center">
+                        <span class="text-accent mr-2">•</span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-
-              <!-- Reserve Button -->
-              <!-- TODO: Integrate Stripe payment processing for stud services -->
-              <div class="mt-8">
-                <a href="/contact" class="luxury-button inline-block">
-                  Reserve {stud.name}
-                </a>
+            ))}
+            
+            {/* Add more placeholders if fewer than 6 studs */}
+            {studs.length < 6 && Array.from({ length: 6 - studs.length }, (_, i) => (
+              <div class="relative overflow-hidden rounded-xl shadow-2xl aspect-square md:aspect-[4/3] bg-gradient-to-br from-secondary to-charcoal border-2 border-dashed border-accent/30 hover:border-accent/50 transition-all duration-300 group">
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                  <div class="text-6xl mb-4 text-accent/50">🐕</div>
+                  <h3 class="text-xl font-bold text-accent mb-2">Add More Studs</h3>
+                  <p class="text-sm text-gray-400 mb-4">Click below to add more breeding studs via the admin panel</p>
+                  <a href="/admin" class="inline-block px-4 py-2 bg-accent text-primary rounded-lg hover:bg-yellow-600 transition-colors text-sm font-semibold">
+                    Add Stud
+                  </a>
+                </div>
               </div>
-            </div>
-
-            <!-- Stud Gallery -->
-            <div class={`${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
-              <Gallery 
-                images={stud.media}
-                title={`${stud.name} Gallery`}
-                columns={2}
-                className="stud-gallery"
-              />
+            ))}
+          </div>
+        </div>
+      </section>
+    ) : (
+      <section class="py-16">
+        <div class="container mx-auto px-4">
+          <div class="text-center py-16 max-w-2xl mx-auto">
+            <div class="text-8xl mb-6">🐕</div>
+            <h3 class="text-3xl font-playfair text-accent mb-4">Coming Soon</h3>
+            <p class="text-xl text-silver mb-6 leading-relaxed">
+              We're preparing detailed profiles for our champion studs. Our breeding program features exceptional bloodlines with proven genetics.
+            </p>
+            <p class="text-gray-400 mb-8">
+              Please check back soon or contact us directly for more information about our current breeding studs and upcoming litters.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/contact" class="btn-primary">
+                <span>📞</span> Contact Us
+              </a>
+              <a href="/admin" class="btn-secondary">
+                <span>⚙️</span> Add Stud Profiles
+              </a>
             </div>
           </div>
-        </section>
-      ))}
-    </div>
+        </div>
+      </section>
+    )}
 
-    <!-- Call to Action -->
-    <div class="text-center mt-24 fade-in">
-      <div class="bg-card-gradient p-12 rounded-lg border border-accent border-opacity-20">
-        <h2 class="text-3xl md:text-4xl font-playfair font-bold text-accent mb-6">
-          Ready to Reserve Your Legend?
-        </h2>
-        <p class="text-xl text-silver mb-8 max-w-2xl mx-auto">
-          Contact us today to reserve stud services or learn more about our champion bloodlines. 
-          Each breeding is carefully planned to produce the next generation of legends.
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="/contact" class="luxury-button">
-            Contact Us
-          </a>
-          <a href="/puppies" class="luxury-button">
-            View Available Puppies
-          </a>
+    <!-- Enhanced Stud Gallery Section -->
+    <section class="py-16 bg-gradient-to-br from-secondary via-charcoal to-secondary relative overflow-hidden">
+      <!-- Decorative elements -->
+      <div class="absolute top-10 left-10 w-20 h-20 border border-accent/20 rounded-full"></div>
+      <div class="absolute bottom-10 right-10 w-16 h-16 bg-accent/10 rounded-lg rotate-45"></div>
+      
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl md:text-5xl font-playfair text-accent mb-4">
+            Stud Gallery
+          </h2>
+          <div class="w-32 h-1 bg-gradient-to-r from-transparent via-accent to-transparent mx-auto rounded-full mb-6"></div>
+          <p class="text-xl text-silver max-w-4xl mx-auto leading-relaxed">
+            See our champion studs in action and get a glimpse of the quality bloodlines that make our breeding program exceptional. Each photo showcases the distinctive characteristics and personalities of our breeding males.
+          </p>
+        </div>
+
+        <Gallery 
+          category="studs"
+          columns={3}
+          className="luxury-gallery"
+          showCategory={false}
+          aspectRatio="square"
+          limit={12}
+        />
+        
+        {studPhotos.length === 0 && (
+          <div class="text-center mt-8">
+            <p class="text-gray-400 mb-4">No stud photos uploaded yet.</p>
+            <a href="/admin" class="inline-block px-6 py-3 bg-accent text-primary rounded-lg hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105">
+              <span>📸</span> Upload Stud Photos
+            </a>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- Detailed Stud Profiles Section -->
+    {studs.length > 0 && (
+      <section class="py-16">
+        <div class="container mx-auto px-4">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-playfair text-accent mb-4">
+              Detailed Profiles
+            </h2>
+            <div class="w-32 h-1 bg-gradient-to-r from-transparent via-accent to-transparent mx-auto rounded-full mb-6"></div>
+            <p class="text-xl text-silver max-w-4xl mx-auto leading-relaxed">
+              Learn more about each of our champion studs, their unique characteristics, breeding history, and what makes them exceptional additions to our program.
+            </p>
+          </div>
+
+          <div class="space-y-16">
+            {studs.map((stud, index) => (
+              <div id={stud.slug} class="stud-profile-card group" data-index={index}>
+                <div class="bg-gradient-to-br from-secondary to-charcoal rounded-2xl p-8 shadow-2xl border border-accent/20 hover:border-accent/40 transition-all duration-500">
+                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class={index % 2 === 0 ? "order-1" : "order-2"}>
+                      <div class="space-y-4">
+                        {/* Main Featured Image */}
+                        <div class="relative overflow-hidden rounded-xl shadow-2xl group-hover:shadow-gold transition-all duration-500">
+                          <img 
+                            src={stud.image} 
+                            alt={`${stud.title} - Champion AKC Mini English Bulldog`}
+                            class="w-full h-96 object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                          />
+                          <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <div class="bg-black/70 backdrop-blur-sm rounded-lg p-3">
+                              <p class="text-white text-sm">📸 Champion Bloodline Stud</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Gallery Images */}
+                        {stud.images && stud.images.length > 0 && (
+                          <div class="grid grid-cols-2 gap-2">
+                            {stud.images.slice(0, 4).map((galleryImage: any, imgIndex: number) => (
+                              <div class="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                                <img 
+                                  src={typeof galleryImage === 'string' ? galleryImage : galleryImage.url} 
+                                  alt={`${stud.title} - Photo ${imgIndex + 1}`}
+                                  class="w-full h-24 object-cover hover:scale-110 transition-transform duration-300"
+                                  loading="lazy"
+                                />
+                                <div class="absolute inset-0 bg-black/20 hover:bg-black/40 transition-colors duration-300"></div>
+                              </div>
+                            ))}
+                            {stud.images.length > 4 && (
+                              <div class="relative overflow-hidden rounded-lg shadow-lg bg-secondary/50 flex items-center justify-center">
+                                <p class="text-accent text-sm font-semibold">+{stud.images.length - 4} more</p>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div class={index % 2 === 0 ? "order-2" : "order-1"}>
+                      <div class="space-y-6">
+                        <div>
+                          <h3 class="text-3xl md:text-4xl font-playfair text-accent mb-2 group-hover:text-yellow-400 transition-colors duration-300">
+                            {stud.title}
+                          </h3>
+                          <div class="w-16 h-1 bg-gradient-to-r from-accent to-yellow-600 rounded-full mb-4"></div>
+                        </div>
+                        
+                        <p class="text-silver text-lg leading-relaxed">
+                          {stud.description}
+                        </p>
+                        
+                        {stud.features.length > 0 && (
+                          <div>
+                            <h4 class="text-xl font-playfair text-accent mb-4 flex items-center gap-2">
+                              <span>✨</span> Key Features
+                            </h4>
+                                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                               {stud.features.map((feature: string) => (
+                                <div class="flex items-center text-silver group-hover:text-white transition-colors duration-300">
+                                  <span class="text-accent mr-3 text-lg">•</span>
+                                  <span class="text-sm md:text-base">{feature}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {stud.body && (
+                          <div class="prose prose-invert max-w-none">
+                            <div class="text-gray-300 leading-relaxed">
+                              {stud.body}
+                            </div>
+                          </div>
+                        )}
+
+                        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                          <a href="/contact" class="btn-primary group-hover:scale-105 transition-transform duration-300">
+                            <span>📞</span> Contact About Breeding
+                          </a>
+                          <a href="/puppies" class="btn-secondary group-hover:scale-105 transition-transform duration-300">
+                            <span>🐶</span> See Available Puppies
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Call to Action Section -->
+    <section class="py-16 bg-gradient-to-br from-accent/10 to-transparent">
+      <div class="container mx-auto px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+          <h2 class="text-3xl md:text-4xl font-playfair text-accent mb-6">
+            Interested in Our Breeding Program?
+          </h2>
+          <p class="text-xl text-silver mb-8 leading-relaxed">
+            Our champion studs are available for approved breeding arrangements. Contact us to learn more about our program and upcoming litters.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="btn-primary text-lg px-8 py-4">
+              <span>📞</span> Contact Us Today
+            </a>
+            <a href="/puppies" class="btn-secondary text-lg px-8 py-4">
+              <span>🐶</span> View Available Puppies
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
 </Layout>
 
 <style>
-  /* Stud Profile Animations */
-  .stud-profile {
-    opacity: 0;
-    transform: translateY(50px);
-    animation: fadeInUp 1s ease-out forwards;
+  .stud-card {
+    @apply relative;
   }
-
-  .slide-left {
-    animation-delay: 0.2s;
+  
+  .luxury-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-
-  .slide-right {
-    animation-delay: 0.4s;
+  
+  .luxury-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(212, 175, 55, 0.3);
   }
-
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Theme-specific styling */
-  .stud-profile.joker {
-    border-left: 4px solid #D2691E;
-  }
-
-  .stud-profile.hannibal {
-    border-left: 4px solid #2F2F2F;
-  }
-
-  .stud-profile.substance {
-    border-left: 4px solid #F5F5DC;
-  }
-
-  .stud-profile.nirvana {
-    border-left: 4px solid #9370DB;
-  }
-
-  .stud-profile.sandman {
-    border-left: 4px solid #D4AF37;
-  }
-
-  .stud-profile.harley {
-    border-left: 4px solid #FF69B4;
-  }
-
-  /* Gallery styling */
-  .stud-gallery {
+  
+  .luxury-gallery {
     position: relative;
   }
-
-  .stud-gallery::before {
+  
+  .luxury-gallery::before {
     content: '';
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    background: linear-gradient(45deg, #D4AF37, #4169E1);
-    border-radius: 10px;
-    opacity: 0.1;
-    z-index: -1;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #D4AF37, #B8941F);
+    border-radius: 2px;
   }
-
-  /* Responsive adjustments */
-  @media (max-width: 1024px) {
-    .stud-profile .lg\:order-1,
-    .stud-profile .lg\:order-2 {
-      order: initial !important;
+  
+  .stud-profile-card {
+    scroll-margin-top: 100px;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-accent to-yellow-600 hover:from-yellow-600 hover:to-accent text-primary font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2 justify-center;
+  }
+  
+  .btn-secondary {
+    @apply border-2 border-accent hover:bg-accent hover:text-primary text-accent font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center gap-2 justify-center;
+  }
+  
+  /* Enhanced animations */
+  @keyframes fadeInUp {
+    from { 
+      opacity: 0; 
+      transform: translateY(30px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
     }
   }
-
-  /* Hover effects */
-  .stud-profile:hover {
-    transform: translateY(-5px);
-    transition: transform 0.3s ease;
+  
+  .stud-profile-card {
+    animation: fadeInUp 0.6s ease-out forwards;
   }
-
-  .stud-profile:hover .stud-gallery::before {
-    opacity: 0.2;
-    transition: opacity 0.3s ease;
+  
+  .stud-profile-card:nth-child(even) {
+    animation-delay: 0.1s;
   }
-
-  /* Enhanced typography */
-  .stud-profile h2 {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  
+  .stud-profile-card:nth-child(odd) {
+    animation-delay: 0.2s;
   }
-
-  .stud-profile .italic {
-    font-style: italic;
-    color: #C0C0C0;
+  
+  /* Accessibility improvements */
+  @media (prefers-reduced-motion: reduce) {
+    .luxury-card,
+    .btn-primary,
+    .btn-secondary,
+    .stud-profile-card {
+      animation: none;
+      transform: none !important;
+    }
+    
+    .luxury-card:hover {
+      transform: none;
+    }
   }
-
-  /* Stats table styling */
-  .stud-profile dt {
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .stud-profile dd {
-    font-family: 'Playfair Display', serif;
+  
+  /* Focus states */
+  .btn-primary:focus,
+  .btn-secondary:focus {
+    outline: 2px solid #D4AF37;
+    outline-offset: 2px;
   }
 </style> 
